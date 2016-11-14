@@ -10,6 +10,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    Metronome metronome;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,13 +25,25 @@ public class MainActivity extends AppCompatActivity {
         final MediaPlayer mp7 = MediaPlayer.create(this, R.raw.acoustic_snare);
         final MediaPlayer mp8 = MediaPlayer.create(this, R.raw.acoustic_snare);
 
+
+        // METRONOME
+        metronome = new Metronome();
+
+        // TODO set vars
+        metronome.setBpm(120);
+        metronome.setBeat(1000);
+        metronome.setBeatSound(16.35);
+        metronome.setSound(18.35);
+
+
         // OnclickListener
         OnClickListener listener = new OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()){
                     case R.id.drum1:
-                        mp1.start();
+                       // mp1.start();
+                        metronome.play();
                         break;
                     case R.id.drum2:
                         mp2.start();
@@ -77,16 +90,6 @@ public class MainActivity extends AppCompatActivity {
         btn7.setOnClickListener(listener);
         btn8.setOnClickListener(listener);
 
-        // METRONOME
-        Metronome metronome = new Metronome();
-
-        // TODO set vars
-
-        metronome.setBpm(120);
-        metronome.setBeat(1000);
-        metronome.setBeatSound(16.35);
-        metronome.setSound(18.35);
-        metronome.play();
 
     }
 }
