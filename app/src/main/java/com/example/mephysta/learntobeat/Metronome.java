@@ -1,12 +1,12 @@
 package com.example.mephysta.learntobeat;
 
+import android.os.Process;
 import android.util.Log;
 
 /*
  * Source: http://masterex.github.io/archive/2012/05/28/android-audio-synthesis.html
  */
-public class Metronome {
-
+public class Metronome implements Runnable {
     private double bpm;
     private int beat;
     private int noteValue;
@@ -16,13 +16,24 @@ public class Metronome {
     private final int tick = 1000; // samples of tick
     private boolean play = true;
     private AudioGenerator audioGenerator = new AudioGenerator(8000);
+    private Thread runnableMetronome;
 
-    public Metronome() {
+    public Metronome(int bpm, int beat, double beatSound, double sound) {
         audioGenerator.createPlayer();
+        setBpm(bpm);
+        setBeat(beat);
+        setBeatSound(beatSound);
+        setSound(sound);
     }
 
     public void calcSilence() {
         silence = (int) (((60/bpm)*8000)-tick);
+    }
+
+    public void run() {
+        //moves the current thread into the background
+        android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+        play();
     }
 
     public void play() {

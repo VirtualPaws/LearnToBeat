@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         final MediaPlayer mp7 = MediaPlayer.create(this, R.raw.acoustic_snare);
         final MediaPlayer mp8 = MediaPlayer.create(this, R.raw.acoustic_snare);
 
-
+/*
         // METRONOME
         metronome = new Metronome();
 
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         metronome.setBeat(1000);
         metronome.setBeatSound(16.35);
         metronome.setSound(18.35);
-
+*/
 
         // OnclickListener
         OnClickListener listener = new OnClickListener() {
@@ -43,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
                 switch (v.getId()){
                     case R.id.drum1:
                        // mp1.start();
-                        metronome.play();
+                        //metronome.play();
+                        //metronome.run();
+                        Thread metronomeThread = new Thread(new Metronome(100,500,8.00,16.00));
+                        metronomeThread.start();
                         break;
                     case R.id.drum2:
                         mp2.start();
