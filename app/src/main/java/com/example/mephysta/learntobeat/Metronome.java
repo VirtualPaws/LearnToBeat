@@ -74,6 +74,7 @@ public class Metronome implements Runnable {
         audioGenerator.destroyAudioTrack();
     }
 
+
     public boolean isPlay() {
         return play;
     }

@@ -11,6 +11,9 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     Metronome metronome;
+    Thread metronomeThread;
+    int noteDuration = 2400;
+    boolean isPlaying = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +33,13 @@ public class MainActivity extends AppCompatActivity {
         metronome = new Metronome();
 
         // TODO set vars
-        metronome.setBpm(120);
-        metronome.setBeat(1000);
-        metronome.setBeatSound(16.35);
-        metronome.setSound(18.35);
+        metronome.setBpm(120); //geschwindigkeit
+        metronome.setBeat(1000); //anzahl der schläge
+        metronome.setBeatSound(16.35); //sound C
+        metronome.setSound(18.35); // sound D
 */
+        metronome = new Metronome(100, 1000, 18.35, 16.35);
+        metronomeThread = new Thread(metronome);
 
         // OnclickListener
         OnClickListener listener = new OnClickListener() {
@@ -42,11 +47,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 switch (v.getId()){
                     case R.id.drum1:
-                       // mp1.start();
-                        //metronome.play();
-                        //metronome.run();
-                        Thread metronomeThread = new Thread(new Metronome(100,500,8.00,16.00));
-                        metronomeThread.start();
+                        if(isPlaying) {
+                            isPlaying = false;
+                            metronomeThread.interrupt();
+                        }
+                        else if(!isPlaying) {
+                            isPlaying = true;
+                            metronomeThread.start();
+                        }
                         break;
                     case R.id.drum2:
                         mp2.start();
