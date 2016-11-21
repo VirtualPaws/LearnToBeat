@@ -66,7 +66,7 @@ public class Metronome implements Runnable {
                 }
             }
             audioGenerator.writeSound(sound);
-        } while(play);
+        } while(MainActivity.isPlaying);
     }
 
     public void stop() {

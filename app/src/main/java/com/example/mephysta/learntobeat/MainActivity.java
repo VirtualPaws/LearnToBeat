@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
     Metronome metronome;
     Thread metronomeThread;
     int noteDuration = 2400;
-    boolean isPlaying = false;
+    public static boolean isPlaying = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,15 +56,6 @@ public class MainActivity extends AppCompatActivity {
                             metronomeThread.start();
                         }
                         break;
-                    case R.id.drum2:
-                        mp2.start();
-                        break;
-                    case R.id.drum3:
-                        mp3.start();
-                        break;
-                    case R.id.drum4:
-                        mp4.start();
-                        break;
                     case R.id.drum5:
                         mp5.start();
                         break;
@@ -84,18 +75,12 @@ public class MainActivity extends AppCompatActivity {
         };
 
         Button btn1 = (Button) findViewById(R.id.drum1);
-        Button btn2 = (Button) findViewById(R.id.drum2);
-        Button btn3 = (Button) findViewById(R.id.drum3);
-        Button btn4 = (Button) findViewById(R.id.drum4);
         Button btn5 = (Button) findViewById(R.id.drum5);
         Button btn6 = (Button) findViewById(R.id.drum6);
         Button btn7 = (Button) findViewById(R.id.drum7);
         Button btn8 = (Button) findViewById(R.id.drum8);
 
         btn1.setOnClickListener(listener);
-        btn2.setOnClickListener(listener);
-        btn3.setOnClickListener(listener);
-        btn4.setOnClickListener(listener);
         btn5.setOnClickListener(listener);
         btn6.setOnClickListener(listener);
         btn7.setOnClickListener(listener);
