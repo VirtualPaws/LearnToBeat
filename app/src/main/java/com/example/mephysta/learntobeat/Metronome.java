@@ -1,6 +1,9 @@
 package com.example.mephysta.learntobeat;
 
 import android.os.Process;
+import android.os.SystemClock;
+import android.provider.Settings;
+import android.text.format.Time;
 import android.util.Log;
 
 /*
@@ -37,6 +40,7 @@ public class Metronome implements Runnable {
     }
 
     public void play() {
+        long start = System.currentTimeMillis();
         calcSilence();
         double[] tick =
                 audioGenerator.getSineWave(this.tick, 8000, beatSound);
@@ -48,11 +52,16 @@ public class Metronome implements Runnable {
         do {
             for(int i=0;i<sound.length&&play;i++) {
                 if(t<this.tick) {
-                    if(b == 0)
+                    if(b == 0) {
                         sound[i] = tock[t];
-                    else
+                        long now = System.currentTimeMillis();
+                        //Log.d("TIME TEST", t + ": " + (now - start));
+                        //Log.d("i", i + "");
+                    }else {
                         sound[i] = tick[t];
+                    }
                     t++;
+
                 } else {
                     sound[i] = silence;
                     s++;
