@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
     double start;
 
     public static boolean isPlaying = false;
-    public static final int BPM = 100;
-    public static final double TOLERANCE = 0.1;
+    public static final int BPM = 60;
+    public static final double TOLERANCE = 0.25;
     public static final int COLOR_SUCCESS = 0xFF00FF00;
     public static final int COLOR_FAIL = 0xFFFF0000;
     public static final int DIVISOR_SECONDS = 1000;
@@ -43,15 +43,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final MediaPlayer mp1 = MediaPlayer.create(this, R.raw.acoustic_snare);
-        final MediaPlayer mp2 = MediaPlayer.create(this, R.raw.acoustic_snare);
-        final MediaPlayer mp3 = MediaPlayer.create(this, R.raw.acoustic_snare);
-        final MediaPlayer mp4 = MediaPlayer.create(this, R.raw.acoustic_snare);
-        final MediaPlayer mp5 = MediaPlayer.create(this, R.raw.acoustic_snare);
-        final MediaPlayer mp6 = MediaPlayer.create(this, R.raw.acoustic_snare);
-        final MediaPlayer mp7 = MediaPlayer.create(this, R.raw.acoustic_snare);
-        final MediaPlayer mp8 = MediaPlayer.create(this, R.raw.acoustic_snare);
 
+        final MediaPlayer mp5 = MediaPlayer.create(this, R.raw.acoustic_snare);
 /*
         // METRONOME
         metronome = new Metronome();
@@ -67,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
             beat2time.put(i,(60/(double)BPM)*i);
             Log.d(i + ". beat", " " + beat2time.get(i));
         }
-
-
 
         metronome = new Metronome(BPM, 1000, 18.35, 16.35);
         metronomeThread = new Thread(metronome);
@@ -106,15 +97,6 @@ public class MainActivity extends AppCompatActivity {
                             resultBtn.setBackgroundColor(COLOR_FAIL);
                         }
                         break;
-                    case R.id.drum6:
-                        mp6.start();
-                        break;
-                    case R.id.drum7:
-                        mp7.start();
-                        break;
-                    case R.id.drum8:
-                        mp8.start();
-                        break;
                     default:
                         Log.d("", "Unknown button: " + v.getId());
                 }
@@ -123,16 +105,9 @@ public class MainActivity extends AppCompatActivity {
 
         Button btn1 = (Button) findViewById(R.id.drum1);
         Button btn5 = (Button) findViewById(R.id.drum5);
-        Button btn6 = (Button) findViewById(R.id.drum6);
-        Button btn7 = (Button) findViewById(R.id.drum7);
-        Button btn8 = (Button) findViewById(R.id.drum8);
 
         btn1.setOnClickListener(listener);
         btn5.setOnClickListener(listener);
-        btn6.setOnClickListener(listener);
-        btn7.setOnClickListener(listener);
-        btn8.setOnClickListener(listener);
-
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
