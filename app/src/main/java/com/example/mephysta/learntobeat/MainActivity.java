@@ -43,18 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         final MediaPlayer mp5 = MediaPlayer.create(this, R.raw.acoustic_snare);
-/*
-        // METRONOME
-        metronome = new Metronome();
-
-        // TODO set vars
-        metronome.setBpm(120); //geschwindigkeit
-        metronome.setBeat(1000); //anzahl der schläge
-        metronome.setBeatSound(16.35); //sound C
-        metronome.setSound(18.35); // sound D
-*/
 
         for(int i = 0; i<BPM; i++){
             beat2time.put(i,(60/(double)BPM)*i);

@@ -16,7 +16,7 @@ public class Metronome implements Runnable {
     private int silence;
     private double beatSound;
     private double sound;
-    private final int tick = 1000; // samples of tick
+    private final int tick = 50; // samples of tick, ursache für doppel klick
     private boolean play = true;
     private AudioGenerator audioGenerator = new AudioGenerator(8000);
     private Thread runnableMetronome;
@@ -61,7 +61,6 @@ public class Metronome implements Runnable {
                         sound[i] = tick[t];
                     }
                     t++;
-
                 } else {
                     sound[i] = silence;
                     s++;
