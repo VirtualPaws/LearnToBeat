@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         final MediaPlayer mp5 = MediaPlayer.create(this, R.raw.acoustic_snare);
 
         for(int i = 0; i<BPM; i++){
-            beat2time.put(i,(60/(double)BPM)*i);
+            beat2time.put(i,(60/(double)BPM)*i + (60/(double)BPM)/2);
             Log.d(i + ". beat", " " + beat2time.get(i));
         }
 
@@ -73,11 +73,15 @@ public class MainActivity extends AppCompatActivity {
                         Button resultBtn = (Button) findViewById(R.id.result);
                         double duration = (double)((System.currentTimeMillis() - start) / DIVISOR_SECONDS);
                         boolean hitCorrectly = false;
-                        for(double value : beat2time.values()){
-                            if(duration < value + TOLERANCE && duration > value - TOLERANCE){
-                                Log.d("RESULT", "treffer!");
-                                hitCorrectly = true;
+                        if(duration < 60) {
+                            for (double value : beat2time.values()) {
+                                if (duration < value + TOLERANCE && duration > value - TOLERANCE) {
+                                    Log.d("Hit", "TREFFER: " + duration);
+                                    hitCorrectly = true;
+                                }
                             }
+                        }else{
+                            Log.d("Hit", "ZEIT ABGELAUFEN");
                         }
                         Log.d("Hit", " " + duration);
                         if(hitCorrectly){
