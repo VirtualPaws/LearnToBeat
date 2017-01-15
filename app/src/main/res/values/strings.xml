@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">LearnToBeat</string>
+    <string name="app_name">Hit the Beat</string>
     <string name="titel">Triff den Beat</string>
     <string name="metronom">Metronom</string>
 
     <string name="default_result">Kein Ergebnis konnte ermittelt werden.</string>
-    <string name="retry">Retry</string>
+    <string name="retry">Erneut spielen</string>
     <string name="menu">Menu</string>
 </resources>
