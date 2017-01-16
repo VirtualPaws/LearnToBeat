@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("CD","Time: " + millisUntilFinished / DIVISOR_SECONDS);
 
                 // Aktualisiert den Progressbalken.
-                mProgressStatus = (int)(Math.round((((TOTAL_LEVEL_TIME - millisUntilFinished)) * (100d/30d) / DIVISOR_SECONDS) + 3.3d));
+                mProgressStatus = (int)(Math.round((((TOTAL_LEVEL_TIME - millisUntilFinished)) * (100d/30d) / DIVISOR_SECONDS) + (100d/30d)));
                 mHandler.post(new Runnable() {
                     public void run() {
                         mProgress.setProgress(mProgressStatus);
