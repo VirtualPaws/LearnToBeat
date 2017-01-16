@@ -14,7 +14,7 @@ import java.util.logging.Level;
 /**
  * Created by sJantzen on 09.01.2017.
  */
-public class LevelFinished extends AppCompatActivity {
+public class LevelFinished extends Activity {
 
     public static int successHits = 0;
     public static int failedHits = 0;

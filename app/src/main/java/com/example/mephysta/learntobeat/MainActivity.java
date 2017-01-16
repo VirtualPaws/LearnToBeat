@@ -1,5 +1,6 @@
 package com.example.mephysta.learntobeat;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.icu.math.BigDecimal;
 import android.media.MediaPlayer;
@@ -22,7 +23,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     public static Metronome metronome;
     public static Thread metronomeThread;
@@ -85,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("CD","Time: " + millisUntilFinished / DIVISOR_SECONDS);
 
                 // Aktualisiert den Progressbalken.
-                mProgressStatus = (int)(Math.round((((TOTAL_LEVEL_TIME - millisUntilFinished)) * (100d/30d) / DIVISOR_SECONDS) + 3.3d));
+                mProgressStatus = (int)(Math.round((((TOTAL_LEVEL_TIME - millisUntilFinished)) * (100d/30d) / DIVISOR_SECONDS) + (100d/30d)));
                 mHandler.post(new Runnable() {
                     public void run() {
                         mProgress.setProgress(mProgressStatus);
