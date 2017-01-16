@@ -1,5 +1,6 @@
 package com.example.mephysta.learntobeat;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
  * Created by sJantzen on 13.12.2016.
  */
 
-public class SplashActivity  extends AppCompatActivity {
+public class SplashActivity  extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
