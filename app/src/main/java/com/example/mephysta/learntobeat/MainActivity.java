@@ -121,6 +121,9 @@ public class MainActivity extends Activity {
                             metronomeThread.start();
                             start = System.currentTimeMillis();
                             countDowntimer.start();
+                            // reset hit counter
+                            successCounter = 0;
+                            failCounter = 0;
                         }
                         break;
                     case R.id.drum5:
@@ -171,6 +174,8 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, LevelFinished.class);
         intent.putExtra("result_success", successCounter);
         intent.putExtra("result_fail", failCounter);
+        intent.putExtra("bpm", BPM);
+        intent.putExtra("time", TOTAL_LEVEL_TIME);
         startActivity(intent);
         finish();
     }

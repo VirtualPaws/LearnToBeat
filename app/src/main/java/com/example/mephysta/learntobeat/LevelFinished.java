@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.mephysta.learntobeat.database.DataSource;
+import com.example.mephysta.learntobeat.database.Score;
+
 import java.util.logging.Level;
 
 /**
@@ -16,8 +19,14 @@ import java.util.logging.Level;
  */
 public class LevelFinished extends Activity {
 
+    public static final String LOG_TAG = LevelFinished.class.getSimpleName();
+
     public static int successHits = 0;
     public static int failedHits = 0;
+    public static int bpm = 0;
+    public static int time = 0;
+
+    private DataSource dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +36,25 @@ public class LevelFinished extends Activity {
         Intent resultIntent = getIntent();
         successHits = resultIntent.getIntExtra("result_success", 0);
         failedHits = resultIntent.getIntExtra("result_fail", 0);
+        bpm = resultIntent.getIntExtra("bpm",0);
+        time = resultIntent.getIntExtra("time", 0);
+
+        dataSource = new DataSource(this);
+
+        Log.d(LOG_TAG, "Die Datenquelle wird geöffnet.");
+        dataSource.open();
+
+        // save current score
+        Log.d(LOG_TAG, "Aktuellen Score (" + successHits + ") in die DB schreiben.");
+        dataSource.createScore(1,successHits,bpm,"test",time);
+
+        // get high score
+        Score highScore = dataSource.getHighScore();
+        Log.d(LOG_TAG, "Aktueller HighScore: " + highScore.getScore());
+
+
+        Log.d(LOG_TAG, "Die Datenquelle wird geschlossen.");
+        dataSource.close();
 
         TextView resultText = (TextView) findViewById(R.id.resultText);
         resultText.setText(successHits + " von 30 Ticks richtig getroffen!");
