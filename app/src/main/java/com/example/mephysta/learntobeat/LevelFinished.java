@@ -42,7 +42,7 @@ public class LevelFinished extends Activity {
                         break;
                     case R.id.menu:
                         Log.d("Menu", "Zurück zum Menu.");
-                        // TODO noch nicht implementiert
+                        startMenu();
                         break;
                 }
             }
@@ -60,6 +60,12 @@ public class LevelFinished extends Activity {
      */
     private void retry(){
         Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void startMenu(){
+        Intent intent = new Intent(this, GameMenu.class);
         startActivity(intent);
         finish();
     }

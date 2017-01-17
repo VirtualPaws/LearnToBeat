@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+
+    android:background="@drawable/bg_orange">>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        android:id="@+id/start"
+
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="casual"
+        android:textColor="@color/white"
+        android:text="@string/start"
+
+        android:background="@drawable/button_selector"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/help"
+
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="casual"
+        android:textColor="@color/white"
+        android:text="@string/help"
+
+        android:background="@drawable/button_selector"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/settings"
+
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="casual"
+        android:textColor="@color/white"
+        android:text="@string/settings"
+
+        android:background="@drawable/button_selector"
+        />
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+
+        android:src="@drawable/cat_02"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:id="@+id/imageView2" />
+
+</LinearLayout>
