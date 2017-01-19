@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+
+    android:background="@drawable/bg_orange">>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:id="@+id/bpm_txt"
+
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="casual"
+        android:text="@string/bpm"
+
+        />
+
+    <NumberPicker
+        android:id="@+id/bpm_picker"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        ></NumberPicker>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="50dp"
+        android:id="@+id/save"
+
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="casual"
+        android:textColor="@color/white"
+        android:text="@string/save"
+
+        android:background="@drawable/button_selector"
+        />
+
+
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="-20dp"
+
+        android:src="@drawable/cat_02"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:id="@+id/imageView2" />
+
+</LinearLayout>
