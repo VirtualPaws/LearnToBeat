@@ -2,20 +2,22 @@ package com.example.sophiekohlberger.svg_test;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-//import android.view.animation.Animation;
+import android.graphics.Rect;
 
-import java.util.Random;
-
-
-public class Bonbon extends GameObject {
+public class Bonbon {
     private int speed;
     private Bitmap sprite;
+    protected int x;
+    protected int y;
+    protected int width;
+    protected int height;
 
     public Bonbon(Bitmap res, int x, int y, int w, int h) {
-        super.x = x;
-        super.y = y;
+        this.x = x;
+        this.y = y;
         width = w;
         height = h;
+
         speed = 7;
         sprite = res;
     }
@@ -32,11 +34,14 @@ public class Bonbon extends GameObject {
         }catch(Exception e){}
     }
 
-    //???
-    @Override
-    public int getWidth()
-    {
-        //offset slightly for more realistic collision detection
-        return width - 10;
+    public Rect findLocation() {
+        Rect rect= new Rect();
+
+        rect.left = x;
+        rect.top = y;
+        rect.right = rect.left + width;
+        rect.bottom =rect.top + height;
+
+        return rect;
     }
 }

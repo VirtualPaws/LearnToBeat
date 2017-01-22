@@ -1,13 +1,10 @@
 package com.example.sophiekohlberger.svg_test;
 
-/**
- * Created by sophiekohlberger on 27.11.16.
- */
-
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
 public class MainThread extends Thread {
+    //the game loop is called 30 times a second
     private int FPS = 30;
     private double averageFPS;
     private SurfaceHolder surfaceHolder;
@@ -28,6 +25,7 @@ public class MainThread extends Thread {
         long waitTime;
         long totalTime = 0;
         int frameCount = 0;
+        //each time the game loop should be 1000/30 fps
         long targetTime = 1000 / FPS;
 
         while (running) {
@@ -52,8 +50,9 @@ public class MainThread extends Thread {
                 }
             }
 
-
+            //ms for update and draw the game once
             timeMillis = (System.nanoTime() - startTime) / 1000000;
+            //how long to wait to go through the loop again
             waitTime = targetTime - timeMillis;
 
             try {

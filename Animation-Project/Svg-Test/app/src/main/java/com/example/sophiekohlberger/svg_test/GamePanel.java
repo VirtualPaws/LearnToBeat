@@ -1,29 +1,30 @@
 package com.example.sophiekohlberger.svg_test;
 
-        import android.annotation.TargetApi;
-        import android.content.Context;
-        import android.graphics.Bitmap;
-        import android.graphics.Canvas;
-        import android.graphics.drawable.BitmapDrawable;
-        import android.graphics.drawable.Drawable;
-        import android.graphics.drawable.VectorDrawable;
-        import android.os.Build;
-        import android.support.v4.content.ContextCompat;
-        import android.util.AttributeSet;
-        import android.view.SurfaceHolder;
-        import android.view.SurfaceView;
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
+import android.util.AttributeSet;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
-        import java.util.ArrayList;
+import java.util.ArrayList;
+
+
 
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
+    // Bonbonfarben
     private static int[] BONBON_DRAWABLES = new int[]{R.drawable.ic_single_bonbon_o, R.drawable.ic_single_bonbon_g, R.drawable.ic_single_bonbon_b};
     public static int WIDTH = 382;
     public static int HEIGHT = 455;
-    public static final int MOVESPEED = -5;
     private MainThread thread;
     private Background bg;
-
     private long bonbonStartTime;
     private ArrayList<Bonbon> bonbons;
     private int currentDrawablePointer = 0;
@@ -41,18 +42,28 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         setFocusable(true);
     }
 
+    public ArrayList<Bonbon> getList() {
+        return bonbons;
+    }
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
     }
 
     @Override
+    //stop thread
     public void surfaceDestroyed(SurfaceHolder holder) {
         boolean retry = true;
-        while (retry) {
+        // to prevent infinite loop
+        int counter = 0;
+        while(retry && counter<1000)
+        {
+            counter++;
             try {
                 thread.setRunning(false);
                 thread.join();
                 retry = false;
+                thread=null;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -60,14 +71,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override
+    //start thread
     public void surfaceCreated(SurfaceHolder holder) {
+        //as svg
         Bitmap bitmap = getBitmap(getContext(), R.drawable.ic_bg, true);
         bg = new Background(bitmap);
 
         bonbons = new ArrayList<Bonbon>();
         bonbonStartTime = System.nanoTime();
 
-        //we can safely start the game loop
+        // start the game loop
         if(thread == null || !thread.isAlive()) {
             thread = new MainThread(getHolder(), this);
             thread.setRunning(true);
@@ -75,25 +88,26 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-
     public void update() {
-        bg.update();
+        //add bonbons on timer, in ms
+        long bonbonTime = (System.nanoTime()- bonbonStartTime) / 1000000;
+        int bonbonDensity = 1500; //4500
 
-        //add bonbons on timer
-        long bonbonElapsed = (System.nanoTime()- bonbonStartTime) / 1000000;
-        int bonbonDensity = 1500;
-        //int bonbonDensity = 4500;
-        if(bonbonElapsed > bonbonDensity){
+        //show next bonbon color
+        if(bonbonTime > bonbonDensity){
 
             System.out.println("making bonbon");
 
             int drawableRes = BONBON_DRAWABLES[getCurrentDrawablePointer()];
+            //svg
             Bitmap bitmap = getBitmap(getContext(), drawableRes, false);
+
             Bonbon bonbon = new Bonbon(bitmap, WIDTH - 50, 40, WIDTH, HEIGHT);
             bonbons.add(bonbon);
 
             //reset timer
             bonbonStartTime = System.nanoTime();
+
         }
 
         //loop through every bonbon
@@ -101,19 +115,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         {
             //update bonbon
             bonbons.get(i).update();
-
-            /*if(collision(bonbons.get(i),player))
-            {
-                bonbons.remove(i);
-                player.setPlaying(false);
-                break;
-            }
-            //remove bonbons if it is way off the screen
-            if(bonbons.get(i).getX()<-100)
-            {
-                bonbons.remove(i);
-                break;
-            }*/
         }
     }
 
@@ -126,7 +127,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void draw(Canvas canvas) {
-        //higher Resolution
+        //bg same size as screen
         final float scaleFactorX = getWidth() / (WIDTH * 1.f);
         final float scaleFactorY = getHeight() / (HEIGHT * 1.f);
 
@@ -136,12 +137,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             bg.draw(canvas);
 
             //draw bonbons
-            for(Bonbon m: bonbons)
-            {
+            for (Bonbon m : bonbons) {
                 m.draw(canvas);
             }
 
-            canvas.restoreToCount(savedState); //return back to the same state (unscale)
+            canvas.restoreToCount(savedState); //return back to the same state (unscale), otherwise it would keep scaling
         }
     }
 
@@ -174,6 +174,4 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         vectorDrawable.draw(canvas);
         return bitmap;
     }
-
-
 }
