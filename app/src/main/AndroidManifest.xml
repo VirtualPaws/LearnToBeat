@@ -31,7 +31,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".Settings"
+            android:theme="@android:style/Theme.Holo.NoActionBar"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -40,7 +47,6 @@
         <activity
             android:exported="true"
             android:name=".GameMenu"
-            android:label="@string/title_activity_game_menu"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
