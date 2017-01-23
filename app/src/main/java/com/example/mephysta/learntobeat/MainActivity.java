@@ -2,6 +2,7 @@ package com.example.mephysta.learntobeat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.icu.math.BigDecimal;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -47,29 +48,23 @@ public class MainActivity extends Activity {
 
     public static Map<Integer, Double> beat2time = new HashMap<>();
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+    private static CountDownTimer countDowntimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final MediaPlayer mp5 = MediaPlayer.create(this, R.raw.acoustic_snare);
+        // PROGRESS BAR
+        mProgress = (ProgressBar) findViewById(R.id.progress_bar);
 
+        // METRONOM
         for(int i = 0; i<BPM; i++){
             beat2time.put(i,(60/(double)BPM)*i + (60/(double)BPM)/2);
             Log.d(i + ". beat", " " + beat2time.get(i));
         }
-
         metronome = new Metronome(BPM, 1000, 18.35, 16.35);
         metronomeThread = new Thread(metronome);
-
-        mProgress = (ProgressBar) findViewById(R.id.progress_bar);
-
 
         /*
          * Der Countdowntimer wird mit Levelbeginn gestartet und zählt dann die maximale Levelzeit runter.
@@ -77,7 +72,7 @@ public class MainActivity extends Activity {
          * @param TOTAL_LEVEL_TIME -> Wie lange das Level geht. Momentan 30 sec
          * @param DIVISOR_SECONDS -> Wie oft ein Event gehandelt wird. Momentan jede Sekunde.
          */
-        final CountDownTimer countDowntimer = new CountDownTimer(TOTAL_LEVEL_TIME, DIVISOR_SECONDS) {
+        countDowntimer = new CountDownTimer(TOTAL_LEVEL_TIME, DIVISOR_SECONDS) {
             /*
              * Eventhandling bei jedem Tick des CountDowns (Momentan jede Sekunde).
              * Ein Progessbalken wird aktualisiert, damit man erkennt, wie lange das Level noch geht.
@@ -96,7 +91,6 @@ public class MainActivity extends Activity {
             /*
              * Handling wenn Countdowntimer abgelaufen ist.
              * Momentan wird der Progessbalken aktualisiert und das Metronom gestoppt.
-             * TODO Auswertung anzeigen mit weiterführender Navigation.
              */
             public void onFinish() {
                 Log.d("CD","FERTIG. Metronome wird beendet und Auswertung gezeigt.");
@@ -106,65 +100,23 @@ public class MainActivity extends Activity {
                 finishLevel();
             }
         };
+    }
 
-        // OnclickListener
-        OnClickListener listener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.drum1:
-                        if (isPlaying) {
-                            isPlaying = false;
-                            metronomeThread.interrupt();
-                        } else if (!isPlaying) {
-                            isPlaying = true;
-                            metronomeThread.start();
-                            start = System.currentTimeMillis();
-                            countDowntimer.start();
-                            // reset hit counter
-                            successCounter = 0;
-                            failCounter = 0;
-                        }
-                        break;
-                    case R.id.drum5:
-                        //mp5.start();
-                        Button resultBtn = (Button) findViewById(R.id.result);
-                        double duration = (double)((System.currentTimeMillis() - start) / DIVISOR_SECONDS);
-                        boolean hitCorrectly = false;
-                        if(duration < 60) {
-                            for (double value : beat2time.values()) {
-                                if (duration < value + TOLERANCE && duration > value - TOLERANCE) {
-                                    Log.d("Hit", "TREFFER: " + duration);
-                                    hitCorrectly = true;
-                                }
-                            }
-                        }else{
-                            Log.d("Hit", "ZEIT ABGELAUFEN");
-                        }
-                        Log.d("Hit", " " + duration);
-                        if(hitCorrectly){
-                            resultBtn.setBackgroundColor(COLOR_SUCCESS);
-                            successCounter++;
-                        }else{
-                            resultBtn.setBackgroundColor(COLOR_FAIL);
-                            failCounter++;
-                        }
-                        break;
-                    default:
-                        Log.d("", "Unknown button: " + v.getId());
-                }
-            }
-        };
+    /*
+     * get location of the paw
+     */
+    private Rect getLocationOnScreen(View imgAnim) {
+        Rect mRect = new Rect();
+        int[] location = new int[2];
 
-        Button btn1 = (Button) findViewById(R.id.drum1);
-        Button btn5 = (Button) findViewById(R.id.drum5);
+        imgAnim.getLocationOnScreen(location);
 
-        btn1.setOnClickListener(listener);
-        btn5.setOnClickListener(listener);
+        mRect.left = location[0];
+        mRect.top = location[1];
+        mRect.right = location[0] + imgAnim.getWidth();
+        mRect.bottom = location[1] + imgAnim.getHeight();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        return mRect;
     }
 
     /*
@@ -181,38 +133,50 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     * Starts and stops the metronome.
+     * @param v
      */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Main Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
+    public void startStopMetronom(View v){
+        if (isPlaying) {
+            isPlaying = false;
+            metronomeThread.interrupt();
+        } else if (!isPlaying) {
+            isPlaying = true;
+            metronomeThread.start();
+            start = System.currentTimeMillis();
+            countDowntimer.start();
+            // reset hit counter
+            successCounter = 0;
+            failCounter = 0;
+        }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    /**
+     * User tries to hit the tick. Checks user input and shows result.
+     * @param v
+     */
+    public void grapBonbon(View v){
+        Button resultBtn = (Button) findViewById(R.id.result);
+        double duration = (double)((System.currentTimeMillis() - start) / DIVISOR_SECONDS);
+        boolean hitCorrectly = false;
+        if(duration < 60) {
+            for (double value : beat2time.values()) {
+                if (duration < value + TOLERANCE && duration > value - TOLERANCE) {
+                    Log.d("Hit", "TREFFER: " + duration);
+                    hitCorrectly = true;
+                }
+            }
+        }else{
+            Log.d("Hit", "ZEIT ABGELAUFEN");
+        }
+        Log.d("Hit", " " + duration);
+        if(hitCorrectly){
+            resultBtn.setBackgroundColor(COLOR_SUCCESS);
+            successCounter++;
+        }else{
+            resultBtn.setBackgroundColor(COLOR_FAIL);
+            failCounter++;
+        }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 }

@@ -23,8 +23,6 @@
         android:fontFamily="casual"
         />
 
-
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="fill_parent"
@@ -39,25 +37,23 @@
         android:layout_alignParentStart="true">
 
         <Button
-            android:id="@+id/drum1"
+            android:id="@+id/metronomeStartStopBtn"
             android:text="Metronom  Start/Stop"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-
             android:textSize="10dp"
             android:fontFamily="casual"
             android:textStyle="bold"
             android:textColor="@color/white"
-
             android:soundEffectsEnabled="false"
             android:background="@drawable/button_selector"
-            />
-            />
+            android:onClick="startStopMetronom"/>
+
     </LinearLayout>
 
     <Button
-        android:id="@+id/drum5"
+        android:id="@+id/actionBtn"
         android:text="Klick hier!"
         android:layout_width="match_parent"
         android:layout_height="83dp"
@@ -71,13 +67,14 @@
         android:textStyle="bold"
         android:textColor="@color/white"
         android:background="@drawable/button_selector"
-        android:soundEffectsEnabled="false"/>
+        android:soundEffectsEnabled="false"
+        android:onClick="grapBonbon"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/result"
-        android:layout_above="@+id/drum5"
+        android:layout_above="@+id/actionBtn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         />
