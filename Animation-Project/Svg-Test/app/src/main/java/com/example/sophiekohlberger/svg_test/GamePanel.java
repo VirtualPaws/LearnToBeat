@@ -26,7 +26,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Background bg;
     private long bonbonStartTime;
-    private ArrayList<Bonbon> bonbons;
+    private  ArrayList<Bonbon> bonbons;
     private int currentDrawablePointer = 0;
 
     public GamePanel(Context context, AttributeSet attrs) {
@@ -91,10 +91,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         //add bonbons on timer, in ms
         long bonbonTime = (System.nanoTime()- bonbonStartTime) / 1000000;
-        int bonbonDensity = 1500; //4500
+        int bonbonDensity = 2500; //4500
 
         //show next bonbon color
-        if(bonbonTime > bonbonDensity){
+        if(bonbonTime > bonbonDensity && bonbons.size() <= 3){
 
             System.out.println("making bonbon");
 
@@ -115,6 +115,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         {
             //update bonbon
             bonbons.get(i).update();
+            if(bonbons.get(i).x < - 100 && bonbonTime > bonbonDensity ){
+                bonbons.get(i).reset();
+            }
         }
     }
 

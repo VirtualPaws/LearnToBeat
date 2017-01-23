@@ -18,13 +18,14 @@ public class Bonbon {
         width = w;
         height = h;
 
-        speed = 7;
+        speed = 15;
         sprite = res;
     }
 
     public void update()
     {
         x -= speed;
+
     }
 
     public void draw(Canvas canvas)
@@ -43,5 +44,9 @@ public class Bonbon {
         rect.bottom =rect.top + height;
 
         return rect;
+    }
+
+    public void reset(){
+        this.x = width-50;
     }
 }
