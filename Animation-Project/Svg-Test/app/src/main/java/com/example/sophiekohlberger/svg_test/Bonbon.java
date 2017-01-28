@@ -2,15 +2,15 @@ package com.example.sophiekohlberger.svg_test;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 
 public class Bonbon {
     private int speed;
     private Bitmap sprite;
-    protected int x;
-    protected int y;
-    protected int width;
-    protected int height;
+
+    private int x;
+    private int y;
+    private int width;
+    private int height;
 
     public Bonbon(Bitmap res, int x, int y, int w, int h) {
         this.x = x;
@@ -22,10 +22,10 @@ public class Bonbon {
         sprite = res;
     }
 
+    //make the bonbon move
     public void update()
     {
         x -= speed;
-
     }
 
     public void draw(Canvas canvas)
@@ -35,18 +35,23 @@ public class Bonbon {
         }catch(Exception e){}
     }
 
-    public Rect findLocation() {
-        Rect rect= new Rect();
-
-        rect.left = x;
-        rect.top = y;
-        rect.right = rect.left + width;
-        rect.bottom =rect.top + height;
-
-        return rect;
+    public int getX() {
+        return x;
     }
 
-    public void reset(){
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    /*public void reset(){
         this.x = width-50;
-    }
+    }*/
 }

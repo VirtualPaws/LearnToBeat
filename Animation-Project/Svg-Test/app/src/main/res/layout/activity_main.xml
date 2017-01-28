@@ -7,17 +7,17 @@
     tools:context="com.example.sophiekohlberger.svg_test.MainActivity">
 
     <com.example.sophiekohlberger.svg_test.GamePanel
-        android:id="@+id/a"
+        android:id="@+id/activity_main_game_panel"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <ImageView
-        android:id="@+id/anim"
+        android:id="@+id/activity_main_paw"
         android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:src="@drawable/cat_paw"
         android:scaleType="fitEnd"
-        android:layout_marginLeft="55dp"
+        android:layout_marginLeft="65dp"
         android:layout_marginBottom="-80dp"/>
 
     <ImageView
