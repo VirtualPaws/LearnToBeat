@@ -23,6 +23,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     // bitmap
     private static int[] BONBON_DRAWABLES = new int[]{R.drawable.single_bonbon_o, R.drawable.single_bonbon_g, R.drawable.single_bonbon_b};
+    private static int[] STICK_DRAWABLES = new int[]{R.drawable.bonbon_stick_o, R.drawable.bonbon_stick_g, R.drawable.bonbon_stick_b};
+
     private static final int LIMIT_BONBONS_ON_SCREEN = 3;
 
     public static int WIDTH = 382;
@@ -105,12 +107,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         if(bonbonTime > bonbonDensity && bonbons.size() < LIMIT_BONBONS_ON_SCREEN){
             System.out.println("making bonbon");
 
-            int drawableRes = BONBON_DRAWABLES[getCurrentDrawablePointer()];
-            //bitmap
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),drawableRes);
+            int currentDrawablePointer = getCurrentDrawablePointer();
+
+            int stickDrawableRes = STICK_DRAWABLES[currentDrawablePointer];
+            Bitmap stickBitmap = BitmapFactory.decodeResource(getResources(),stickDrawableRes);
+
+            int bonbonDrawableRes = BONBON_DRAWABLES[currentDrawablePointer];
+            Bitmap bonbonBitmap = BitmapFactory.decodeResource(getResources(),bonbonDrawableRes);
 
             //dpi
-            Bonbon bonbon = new Bonbon(bitmap, WIDTH - Utils.convertDpToPx(60), Utils.convertDpToPx(22), bitmap.getWidth(), bitmap.getHeight());
+            Bonbon bonbon = new Bonbon(bonbonBitmap, stickBitmap, WIDTH - Utils.convertDpToPx(60), Utils.convertDpToPx(22), bonbonBitmap.getWidth(), bonbonBitmap.getHeight());
             bonbons.add(bonbon);
 
             //reset timer
@@ -186,7 +192,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         return bitmap;
     }
 
-    public void removeBonbon(int index) {
-        bonbons.remove(index);
+    public void removeBonbonFromStick(int index) {
+        bonbons.get(index).removeBonbonImage();
     }
 }

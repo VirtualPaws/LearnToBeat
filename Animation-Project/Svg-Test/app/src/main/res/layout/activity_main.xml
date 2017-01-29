@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/cat_paw"
         android:scaleType="fitEnd"
-        android:layout_marginLeft="65dp"
+        android:layout_marginLeft="72dp"
         android:layout_marginBottom="-80dp"/>
 
     <ImageView

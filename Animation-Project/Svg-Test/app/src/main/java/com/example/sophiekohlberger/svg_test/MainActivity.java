@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
                             boolean hasCollided = UiUtils.isCollision(bonbonRect, pawRect);
                             if(hasCollided) {
-                                gamePanelSurfaceView.removeBonbon(count);
+                                gamePanelSurfaceView.removeBonbonFromStick(count);
                                 break;
                             }
                         }
