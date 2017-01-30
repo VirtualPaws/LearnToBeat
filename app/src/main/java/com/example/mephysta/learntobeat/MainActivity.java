@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 
 import com.example.mephysta.learntobeat.Animation.Bonbon;
 import com.example.mephysta.learntobeat.Animation.GamePanel;
+import com.example.mephysta.learntobeat.Animation.UiUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,10 +44,10 @@ public class MainActivity extends Activity {
     public static Map<Integer, Double> beat2time = new HashMap<>();
     private static CountDownTimer countDowntimer;
     // TODO ANIMATION
-    public static GamePanel gamePanel;
+    public static GamePanel gamePanelSurfaceView;
     public static Animation animTranslate;
     public static Animation animRotate;
-    public static ImageView imgAnim;
+    public static ImageView pawImageView;
     public static ArrayList<Bonbon> bonbons;
 
     @Override
@@ -101,12 +102,12 @@ public class MainActivity extends Activity {
         };
 
         // TODO ANIMATION
-        gamePanel = (GamePanel) findViewById(R.id.gamePanel);
+        gamePanelSurfaceView = (GamePanel) findViewById(R.id.gamePanel);
         bonbons = new ArrayList<Bonbon>();
 
         animTranslate = AnimationUtils.loadAnimation(this, R.anim.anim_translate);
         animRotate = AnimationUtils.loadAnimation(this, R.anim.anim_rotate);
-        imgAnim = (ImageView) findViewById(R.id.anim);
+        pawImageView = (ImageView) findViewById(R.id.anim);
     }
 
     /*
@@ -147,7 +148,7 @@ public class MainActivity extends Activity {
         if (isPlaying) {
             isPlaying = false;
             metronomeThread.interrupt();
-            gamePanel.stopAnimation();
+            gamePanelSurfaceView.stopAnimation();
         } else if (!isPlaying) {
             isPlaying = true;
             metronomeThread.start();
@@ -156,7 +157,7 @@ public class MainActivity extends Activity {
             // reset hit counter
             successCounter = 0;
             failCounter = 0;
-            gamePanel.startAnimation();
+            gamePanelSurfaceView.startAnimation();
         }
     }
 
@@ -194,19 +195,20 @@ public class MainActivity extends Activity {
 
         sets.setAnimationListener(new Animation.AnimationListener() {
 
+            //Check if paw hit-area collided with a bonbon. If yes, remove the bonbon from the surface view
             @Override
             public void onAnimationEnd(Animation animation) {
-                //get location of the imageview
-                int[] location = new int[2];
-                imgAnim.getLocationOnScreen(location);
-                int x = location[0];
-                int y = location[1];
-                Rect paw = getLocationOnScreen(imgAnim);
-                Log.d("GrapAnim","PAW: " + paw);
+                Rect pawRect = UiUtils.getPawHitRect(pawImageView);
 
-                for(int b=0; b<bonbons.size(); b++){
-                    Rect bon = bonbons.get(b).findLocation();
-                    Log.d("GrapAnim","BONBON: " + bon);
+                ArrayList<Bonbon> bonbons = gamePanelSurfaceView.getList();
+                for(int count=0; count<bonbons.size(); count++){
+                    Rect bonbonRect = UiUtils.getBonbonHitRect(bonbons.get(count));
+
+                    boolean hasCollided = UiUtils.isCollision(bonbonRect, pawRect);
+                    if(hasCollided) {
+                        gamePanelSurfaceView.removeBonbonFromStick(count);
+                        break;
+                    }
                 }
             }
 
@@ -215,7 +217,7 @@ public class MainActivity extends Activity {
             @Override
             public void onAnimationStart(Animation animation) {}
         });
-        imgAnim.startAnimation(sets);
+        pawImageView.startAnimation(sets);
     }
 
 }

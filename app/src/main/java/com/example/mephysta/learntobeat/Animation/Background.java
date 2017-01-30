@@ -1,9 +1,7 @@
 package com.example.mephysta.learntobeat.Animation;
 
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-
 
 public class Background {
     private Bitmap image;

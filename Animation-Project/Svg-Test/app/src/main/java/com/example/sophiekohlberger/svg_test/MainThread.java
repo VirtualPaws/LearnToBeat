@@ -50,7 +50,7 @@ public class MainThread extends Thread {
                 }
             }
 
-            //ms for update and draw the game once
+    //ms for update and draw the game once
             timeMillis = (System.nanoTime() - startTime) / 1000000;
             //how long to wait to go through the loop again
             waitTime = targetTime - timeMillis;
