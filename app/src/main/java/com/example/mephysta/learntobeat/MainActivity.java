@@ -3,24 +3,22 @@ package com.example.mephysta.learntobeat;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.icu.math.BigDecimal;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.example.mephysta.learntobeat.Animation.Bonbon;
+import com.example.mephysta.learntobeat.Animation.GamePanel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,26 +27,27 @@ public class MainActivity extends Activity {
     public static Metronome metronome;
     public static Thread metronomeThread;
     public static double start;                             // Metronom Startzeit
-
     public static boolean isPlaying = false;                // trigger für das Metronom
     public static final int BPM = 60;                       // Beats Per Minute
-    public static final double TOLERANCE = 0.25;            // Toleranz beim Treffen des genauen Takts
+    public static final double TOLERANCE = 0.1;            // Toleranz beim Treffen des genauen Takts
     public static final int COLOR_SUCCESS = 0xFF00FF00;     // Feedback Farbe bei Erfolg
     public static final int COLOR_FAIL = 0xFFFF0000;        // Feedback Farbe bei Misserfolg
     public static int successCounter = 0;                  // Zähler der richtigen Klicks
     public static int failCounter = 0;                     // Zähler der falschen Klicks
     public static final int DIVISOR_SECONDS = 1000;         // Divisor ms in s
-
     public static final int TOTAL_LEVEL_TIME = 30000;       // Maximale Levelzeit ( in ms)
     public static final int COUNTDOWN = 3;                  // Startcountdown bevor Level beginnt
-
     private ProgressBar mProgress;                          // Progressbalken
     private int mProgressStatus = 0;                        // Status des Progressbalkens (0-100)
     private Handler mHandler = new Handler();               // für async Update des Progressbalkens
-
     public static Map<Integer, Double> beat2time = new HashMap<>();
-
     private static CountDownTimer countDowntimer;
+    // TODO ANIMATION
+    public static GamePanel gamePanel;
+    public static Animation animTranslate;
+    public static Animation animRotate;
+    public static ImageView imgAnim;
+    public static ArrayList<Bonbon> bonbons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +59,7 @@ public class MainActivity extends Activity {
 
         // METRONOM
         for(int i = 0; i<BPM; i++){
-            beat2time.put(i,(60/(double)BPM)*i + (60/(double)BPM)/2);
+            beat2time.put(i,((TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)BPM)*i + ((TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)BPM)/2);
             Log.d(i + ". beat", " " + beat2time.get(i));
         }
         metronome = new Metronome(BPM, 1000, 18.35, 16.35);
@@ -72,13 +71,13 @@ public class MainActivity extends Activity {
          * @param TOTAL_LEVEL_TIME -> Wie lange das Level geht. Momentan 30 sec
          * @param DIVISOR_SECONDS -> Wie oft ein Event gehandelt wird. Momentan jede Sekunde.
          */
-        countDowntimer = new CountDownTimer(TOTAL_LEVEL_TIME, DIVISOR_SECONDS) {
+        countDowntimer = new CountDownTimer(TOTAL_LEVEL_TIME, 10) {
             /*
              * Eventhandling bei jedem Tick des CountDowns (Momentan jede Sekunde).
              * Ein Progessbalken wird aktualisiert, damit man erkennt, wie lange das Level noch geht.
              */
             public void onTick(long millisUntilFinished) {
-                Log.d("CD","Time: " + millisUntilFinished / DIVISOR_SECONDS);
+                //Log.d("CD","Time: " + millisUntilFinished / DIVISOR_SECONDS);
 
                 // Aktualisiert den Progressbalken.
                 mProgressStatus = (int)(Math.round((((TOTAL_LEVEL_TIME - millisUntilFinished)) * (100d/30d) / DIVISOR_SECONDS) + (100d/30d)));
@@ -100,6 +99,14 @@ public class MainActivity extends Activity {
                 finishLevel();
             }
         };
+
+        // TODO ANIMATION
+        gamePanel = (GamePanel) findViewById(R.id.gamePanel);
+        bonbons = new ArrayList<Bonbon>();
+
+        animTranslate = AnimationUtils.loadAnimation(this, R.anim.anim_translate);
+        animRotate = AnimationUtils.loadAnimation(this, R.anim.anim_rotate);
+        imgAnim = (ImageView) findViewById(R.id.anim);
     }
 
     /*
@@ -140,6 +147,7 @@ public class MainActivity extends Activity {
         if (isPlaying) {
             isPlaying = false;
             metronomeThread.interrupt();
+            gamePanel.stopAnimation();
         } else if (!isPlaying) {
             isPlaying = true;
             metronomeThread.start();
@@ -148,6 +156,7 @@ public class MainActivity extends Activity {
             // reset hit counter
             successCounter = 0;
             failCounter = 0;
+            gamePanel.startAnimation();
         }
     }
 
@@ -162,7 +171,7 @@ public class MainActivity extends Activity {
         if(duration < 60) {
             for (double value : beat2time.values()) {
                 if (duration < value + TOLERANCE && duration > value - TOLERANCE) {
-                    Log.d("Hit", "TREFFER: " + duration);
+                    Log.d("Hit", "TREFFER: " + duration + " value: " + value);
                     hitCorrectly = true;
                 }
             }
@@ -177,6 +186,36 @@ public class MainActivity extends Activity {
             resultBtn.setBackgroundColor(COLOR_FAIL);
             failCounter++;
         }
+
+        // TODO ANIMATION
+        AnimationSet sets = new AnimationSet(false);
+        sets.addAnimation(animRotate);
+        sets.addAnimation(animTranslate);
+
+        sets.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //get location of the imageview
+                int[] location = new int[2];
+                imgAnim.getLocationOnScreen(location);
+                int x = location[0];
+                int y = location[1];
+                Rect paw = getLocationOnScreen(imgAnim);
+                Log.d("GrapAnim","PAW: " + paw);
+
+                for(int b=0; b<bonbons.size(); b++){
+                    Rect bon = bonbons.get(b).findLocation();
+                    Log.d("GrapAnim","BONBON: " + bon);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+            @Override
+            public void onAnimationStart(Animation animation) {}
+        });
+        imgAnim.startAnimation(sets);
     }
 
 }

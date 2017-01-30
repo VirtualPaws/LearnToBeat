@@ -11,6 +11,28 @@
     android:background="@drawable/bg_orange"
     tools:context="com.example.mephysta.learntobeat.MainActivity">
 
+    <com.example.mephysta.learntobeat.Animation.GamePanel
+        android:id="@+id/gamePanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageView
+        android:id="@+id/anim"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cat_paw"
+        android:scaleType="fitEnd"
+        android:layout_marginLeft="55dp"
+        android:layout_marginBottom="-80dp"/>
+
+    <ImageView
+        android:layout_width="345dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cat_head"
+        android:scaleType="fitEnd"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="-12dp"/>
+
     <TextView
         android:id="@+id/titel"
         android:text="@string/titel"
