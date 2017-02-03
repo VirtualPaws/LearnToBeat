@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.example.mephysta.learntobeat.Animation.Bonbon;
 import com.example.mephysta.learntobeat.Animation.GamePanel;
@@ -22,8 +23,6 @@ import com.example.mephysta.learntobeat.Animation.UiUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 public class MainActivity extends Activity {
 
@@ -53,6 +52,8 @@ public class MainActivity extends Activity {
     public Animation animRotate;
     public ImageView pawImageView;
     public ArrayList<Bonbon> bonbons;
+
+    public RelativeLayout infoDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +154,10 @@ public class MainActivity extends Activity {
             // reset hit counter
             successCounter = 0;
             failCounter = 0;
+
+            // PROGRESS BAR
+            infoDialog = (RelativeLayout) findViewById(R.id.infoDialog);
+            infoDialog.removeAllViews();
         }
     }
 
