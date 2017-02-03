@@ -33,7 +33,6 @@ public class Bonbon {
     public void draw(Canvas canvas)
     {
         try{
-
             // We always draw the stick
             canvas.drawBitmap(stickSprite,x,y,null);
 
@@ -67,8 +66,4 @@ public class Bonbon {
             bonbonSprite = null;
         }
     }
-
-    /*public void reset(){
-        this.x = width-50;
-    }*/
 }

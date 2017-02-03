@@ -19,7 +19,6 @@ public class Metronome implements Runnable {
     private final int tick = 50; // samples of tick, ursache für doppel klick
     private boolean play = true;
     private AudioGenerator audioGenerator = new AudioGenerator(8000);
-    private Thread runnableMetronome;
 
     public Metronome(int bpm, int beat, double beatSound, double sound) {
         audioGenerator.createPlayer();
@@ -40,7 +39,16 @@ public class Metronome implements Runnable {
     }
 
     public void play() {
-        long start = System.currentTimeMillis();
+        // TODO
+        // Theoretisch muss hier nur eine Sleep rein, so lange, wie das erste Bonbon braucht, um
+        // bis zur Mitte des Bildschirms zu gelangen
+        try {
+            Log.d("METRONOME", "WAIT");
+            Thread.sleep(10000);
+        } catch (Exception e) {
+            Log.d("METRONOME", "Wait failed " + e.getMessage());
+        }
+
         calcSilence();
         double[] tick =
                 audioGenerator.getSineWave(this.tick, 8000, beatSound);
@@ -54,9 +62,6 @@ public class Metronome implements Runnable {
                 if(t<this.tick) {
                     if(b == 0) {
                         sound[i] = tock[t];
-                        long now = System.currentTimeMillis();
-                        //Log.d("TIME TEST", t + ": " + (now - start));
-                        //Log.d("i", i + "");
                     }else {
                         sound[i] = tick[t];
                     }
@@ -77,69 +82,19 @@ public class Metronome implements Runnable {
         } while(MainActivity.isPlaying);
     }
 
-    public void stop() {
-        play = false;
-        audioGenerator.destroyAudioTrack();
-    }
-
-
-    public boolean isPlay() {
-        return play;
-    }
-
-    public void setPlay(boolean play) {
-        this.play = play;
-    }
-
-    public double getBpm() {
-        return bpm;
-    }
-
     public void setBpm(double bpm) {
         this.bpm = bpm;
-    }
-
-    public int getBeat() {
-        return beat;
     }
 
     public void setBeat(int beat) {
         this.beat = beat;
     }
 
-    public int getNoteValue() {
-        return noteValue;
-    }
-
-    public void setNoteValue(int noteValue) {
-        this.noteValue = noteValue;
-    }
-
-    public int getSilence() {
-        return silence;
-    }
-
-    public void setSilence(int silence) {
-        this.silence = silence;
-    }
-
-    public double getBeatSound() {
-        return beatSound;
-    }
-
     public void setBeatSound(double beatSound) {
         this.beatSound = beatSound;
     }
 
-    public double getSound() {
-        return sound;
-    }
-
     public void setSound(double sound) {
         this.sound = sound;
-    }
-
-    public int getTick() {
-        return tick;
     }
 }

@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 public class MainActivity extends Activity {
 
     public static Metronome metronome;
@@ -30,25 +32,27 @@ public class MainActivity extends Activity {
     public static double start;                             // Metronom Startzeit
     public static boolean isPlaying = false;                // trigger für das Metronom
     public static final int BPM = 60;                       // Beats Per Minute
-    public static final double TOLERANCE = 0.1;            // Toleranz beim Treffen des genauen Takts
+    public static double timeBetween2Beats;                 // Time between two beats, depending on BPM
+    public static final int FPS = 30;                       // Frames Per Second
+    public static final double TOLERANCE = 0.25;             // Toleranz beim Treffen des genauen Takts
     public static final int COLOR_SUCCESS = 0xFF00FF00;     // Feedback Farbe bei Erfolg
     public static final int COLOR_FAIL = 0xFFFF0000;        // Feedback Farbe bei Misserfolg
-    public static int successCounter = 0;                  // Zähler der richtigen Klicks
-    public static int failCounter = 0;                     // Zähler der falschen Klicks
+    public static int successCounter = 0;                   // Zähler der richtigen Klicks
+    public static int failCounter = 0;                      // Zähler der falschen Klicks
     public static final int DIVISOR_SECONDS = 1000;         // Divisor ms in s
     public static final int TOTAL_LEVEL_TIME = 30000;       // Maximale Levelzeit ( in ms)
     public static final int COUNTDOWN = 3;                  // Startcountdown bevor Level beginnt
     private ProgressBar mProgress;                          // Progressbalken
     private int mProgressStatus = 0;                        // Status des Progressbalkens (0-100)
     private Handler mHandler = new Handler();               // für async Update des Progressbalkens
-    public static Map<Integer, Double> beat2time = new HashMap<>();
-    private static CountDownTimer countDowntimer;
-    // TODO ANIMATION
-    public static GamePanel gamePanelSurfaceView;
-    public static Animation animTranslate;
-    public static Animation animRotate;
-    public static ImageView pawImageView;
-    public static ArrayList<Bonbon> bonbons;
+    public Map<Integer, Double> beat2time = new HashMap<>();
+    private CountDownTimer countDowntimer;
+
+    public GamePanel gamePanelSurfaceView;
+    public Animation animTranslate;
+    public Animation animRotate;
+    public ImageView pawImageView;
+    public ArrayList<Bonbon> bonbons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +62,18 @@ public class MainActivity extends Activity {
         // PROGRESS BAR
         mProgress = (ProgressBar) findViewById(R.id.progress_bar);
 
-        // METRONOM
-        for(int i = 0; i<BPM; i++){
-            beat2time.put(i,((TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)BPM)*i + ((TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)BPM)/2);
+        // METRONOME
+        int numberOfBeatsInLevelTime = BPM / 60 * (TOTAL_LEVEL_TIME/DIVISOR_SECONDS);
+        /* Example: BPM = 120 - LevelTime = 30s
+         *      BPM       x            120    x          120
+         *      ---  = -------   -->   --- = ---   -->   --- * 30s = x -->  60 = x
+         *      60s    LvlTime         60s   30s         60s                """"""
+         */
+        timeBetween2Beats = (TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)numberOfBeatsInLevelTime;
+        Log.d("TB2B", ""+timeBetween2Beats);
+
+        for(int i = 0; i<numberOfBeatsInLevelTime; i++){
+            beat2time.put(i,((TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)numberOfBeatsInLevelTime)*i + ((TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)BPM)/2);
             Log.d(i + ". beat", " " + beat2time.get(i));
         }
         metronome = new Metronome(BPM, 1000, 18.35, 16.35);
@@ -101,30 +114,12 @@ public class MainActivity extends Activity {
             }
         };
 
-        // TODO ANIMATION
         gamePanelSurfaceView = (GamePanel) findViewById(R.id.gamePanel);
         bonbons = new ArrayList<Bonbon>();
 
         animTranslate = AnimationUtils.loadAnimation(this, R.anim.anim_translate);
         animRotate = AnimationUtils.loadAnimation(this, R.anim.anim_rotate);
         pawImageView = (ImageView) findViewById(R.id.anim);
-    }
-
-    /*
-     * get location of the paw
-     */
-    private Rect getLocationOnScreen(View imgAnim) {
-        Rect mRect = new Rect();
-        int[] location = new int[2];
-
-        imgAnim.getLocationOnScreen(location);
-
-        mRect.left = location[0];
-        mRect.top = location[1];
-        mRect.right = location[0] + imgAnim.getWidth();
-        mRect.bottom = location[1] + imgAnim.getHeight();
-
-        return mRect;
     }
 
     /*
@@ -142,14 +137,15 @@ public class MainActivity extends Activity {
 
     /**
      * Starts and stops the metronome.
-     * @param v
+     * @param v -> the button which is clicked
      */
-    public void startStopMetronom(View v){
+    public void startStopMetronome(View v){
         if (isPlaying) {
             isPlaying = false;
             metronomeThread.interrupt();
             gamePanelSurfaceView.stopAnimation();
         } else if (!isPlaying) {
+            gamePanelSurfaceView.startAnimation();
             isPlaying = true;
             metronomeThread.start();
             start = System.currentTimeMillis();
@@ -157,7 +153,6 @@ public class MainActivity extends Activity {
             // reset hit counter
             successCounter = 0;
             failCounter = 0;
-            gamePanelSurfaceView.startAnimation();
         }
     }
 
@@ -165,7 +160,7 @@ public class MainActivity extends Activity {
      * User tries to hit the tick. Checks user input and shows result.
      * @param v
      */
-    public void grapBonbon(View v){
+    public void grabBonbon(View v){
         Button resultBtn = (Button) findViewById(R.id.result);
         double duration = (double)((System.currentTimeMillis() - start) / DIVISOR_SECONDS);
         boolean hitCorrectly = false;
@@ -188,7 +183,6 @@ public class MainActivity extends Activity {
             failCounter++;
         }
 
-        // TODO ANIMATION
         AnimationSet sets = new AnimationSet(false);
         sets.addAnimation(animRotate);
         sets.addAnimation(animTranslate);

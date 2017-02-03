@@ -70,7 +70,7 @@
             android:textColor="@color/white"
             android:soundEffectsEnabled="false"
             android:background="@drawable/button_selector"
-            android:onClick="startStopMetronom"/>
+            android:onClick="startStopMetronome"/>
 
     </LinearLayout>
 
@@ -90,7 +90,7 @@
         android:textColor="@color/white"
         android:background="@drawable/button_selector"
         android:soundEffectsEnabled="false"
-        android:onClick="grapBonbon"/>
+        android:onClick="grabBonbon"/>
 
     <Button
         android:layout_width="match_parent"
