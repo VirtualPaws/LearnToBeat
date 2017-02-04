@@ -172,12 +172,6 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void removeDialog(){
-        // PROGRESS BAR
-        infoDialog = (RelativeLayout) findViewById(R.id.infoDialog);
-        infoDialog.removeAllViews();
-    }
-
     /**
      * User tries to hit the tick. Checks user input and shows result.
      * @param v
