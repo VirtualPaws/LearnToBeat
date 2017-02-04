@@ -25,12 +25,12 @@ import java.util.Iterator;
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     // bitmap
-    //private static int[] BONBON_DRAWABLES = new int[]{R.drawable.single_bonbon_o, R.drawable.single_bonbon_g, R.drawable.single_bonbon_b};
-    //private static int[] STICK_DRAWABLES = new int[]{R.drawable.bonbon_stick_o, R.drawable.bonbon_stick_g, R.drawable.bonbon_stick_b};
+    private static int[] BONBON_DRAWABLES = new int[]{R.drawable.single_bonbon_o, R.drawable.single_bonbon_g, R.drawable.single_bonbon_b};
+    private static int[] STICK_DRAWABLES = new int[]{R.drawable.bonbon_stick_o, R.drawable.bonbon_stick_g, R.drawable.bonbon_stick_b};
 
     // TODO bonbons sollten alle die gleiche Größe haben
-    private static int[] BONBON_DRAWABLES = new int[]{R.drawable.single_bonbon_o};
-    private static int[] STICK_DRAWABLES = new int[]{R.drawable.bonbon_stick_o};
+    //private static int[] BONBON_DRAWABLES = new int[]{R.drawable.single_bonbon_o};
+    //private static int[] STICK_DRAWABLES = new int[]{R.drawable.bonbon_stick_o};
 
     private static final int LIMIT_BONBONS_ON_SCREEN = 10;
 

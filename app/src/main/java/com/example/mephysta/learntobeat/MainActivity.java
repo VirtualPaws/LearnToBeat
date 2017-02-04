@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
         timeBetween2Beats = (TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)numberOfBeatsInLevelTime;
         bonbonSpeed = (int)(((GamePanel.WIDTH - Utils.convertDpToPx(60) + 262)/2)/(timeBetween2Beats * FPS));
         waitForFirstBonbon =((((GamePanel.WIDTH - Utils.convertDpToPx(60) +262)* DIVISOR_SECONDS))/bonbonSpeed)/FPS;
-        Log.d("TB2B", ""+timeBetween2Beats);
+        Log.d("TB2B", ""+timeBetween2Beats + " bonbonSpeed: " + bonbonSpeed + " waitForFirstBonbon: " + waitForFirstBonbon);
 
         for(int i = 0; i<numberOfBeatsInLevelTime; i++){
             beat2time.put(i,((TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)numberOfBeatsInLevelTime)*i + ((TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)BPM)/2);
