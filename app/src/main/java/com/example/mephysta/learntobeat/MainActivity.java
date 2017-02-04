@@ -146,22 +146,22 @@ public class MainActivity extends Activity {
      * Starts and stops the metronome.
      * @param v -> the button which is clicked
      */
-    public void startStopMetronome(View v){
+    public void startStopMetronome(){
         if (isPlaying) {
             isPlaying = false;
             metronomeThread.interrupt();
             gamePanelSurfaceView.stopAnimation();
         } else if (!isPlaying) {
-            gamePanelSurfaceView.startAnimation();
             // TODO hier muss eine wartezeit rein, damit das Metronom erst Tickt,
             // wenn der erste Bonbon in position ist
             // Außerdem verschwindet das infofenster leider auch erst beim ersten Tick
+            /*
             try {
                 Log.d("METRONOME", "WAIT: " + waitForFirstBonbon);
                 Thread.sleep(waitForFirstBonbon);
             } catch (Exception e) {
                 Log.d("METRONOME", "Wait failed " + e.getMessage());
-            }
+            }*/
             isPlaying = true;
             metronomeThread.start();
             start = System.currentTimeMillis();
@@ -170,7 +170,6 @@ public class MainActivity extends Activity {
             successCounter = 0;
             failCounter = 0;
 
-            removeDialog();
         }
     }
 
@@ -236,6 +235,12 @@ public class MainActivity extends Activity {
         // dialog Box
         infoDialog = (RelativeLayout) findViewById(R.id.infoDialog);
         infoDialog.removeAllViews();
+    }
+
+    public void startGame(View v){
+        removeDialog();
+        startStopMetronome();
+        gamePanelSurfaceView.startAnimation();
     }
 
 }
