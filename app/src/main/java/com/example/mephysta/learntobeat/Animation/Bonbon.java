@@ -2,6 +2,9 @@ package com.example.mephysta.learntobeat.Animation;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.util.Log;
+
+import com.example.mephysta.learntobeat.MainActivity;
 
 public class Bonbon {
     private int speed;
@@ -19,7 +22,10 @@ public class Bonbon {
         width = w;
         height = h;
 
-        speed = 15;
+        // TODO Speed
+        speed = (int)(((GamePanel.WIDTH - Utils.convertDpToPx(60) + width)/2)/(MainActivity.timeBetween2Beats * MainActivity.FPS));
+        //Log.d("BONBON", "SPEED: " + speed + " WIDTH: " + width + " WIDTH2: " + (GamePanel.WIDTH - Utils.convertDpToPx(60)));
+        //speed = 15;
         bonbonSprite = bonbon;
         stickSprite = bonbonStick;
     }

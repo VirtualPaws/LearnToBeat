@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import com.example.mephysta.learntobeat.Animation.Bonbon;
 import com.example.mephysta.learntobeat.Animation.GamePanel;
 import com.example.mephysta.learntobeat.Animation.UiUtils;
+import com.example.mephysta.learntobeat.Animation.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,8 +45,11 @@ public class MainActivity extends Activity {
     private ProgressBar mProgress;                          // Progressbalken
     private int mProgressStatus = 0;                        // Status des Progressbalkens (0-100)
     private Handler mHandler = new Handler();               // für async Update des Progressbalkens
-    public Map<Integer, Double> beat2time = new HashMap<>();
+    public static Map<Integer, Double> beat2time = new HashMap<>();
     private CountDownTimer countDowntimer;
+
+    public static int waitForFirstBonbon;
+    public static int bonbonSpeed;
 
     public GamePanel gamePanelSurfaceView;
     public Animation animTranslate;
@@ -71,6 +75,8 @@ public class MainActivity extends Activity {
          *      60s    LvlTime         60s   30s         60s                """"""
          */
         timeBetween2Beats = (TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)numberOfBeatsInLevelTime;
+        bonbonSpeed = (int)(((GamePanel.WIDTH - Utils.convertDpToPx(60) + 262)/2)/(timeBetween2Beats * FPS));
+        waitForFirstBonbon =((((GamePanel.WIDTH - Utils.convertDpToPx(60) +262)* DIVISOR_SECONDS))/bonbonSpeed)/FPS;
         Log.d("TB2B", ""+timeBetween2Beats);
 
         for(int i = 0; i<numberOfBeatsInLevelTime; i++){
@@ -147,6 +153,15 @@ public class MainActivity extends Activity {
             gamePanelSurfaceView.stopAnimation();
         } else if (!isPlaying) {
             gamePanelSurfaceView.startAnimation();
+            // TODO hier muss eine wartezeit rein, damit das Metronom erst Tickt,
+            // wenn der erste Bonbon in position ist
+            // Außerdem verschwindet das infofenster leider auch erst beim ersten Tick
+            try {
+                Log.d("METRONOME", "WAIT: " + waitForFirstBonbon);
+                Thread.sleep(waitForFirstBonbon);
+            } catch (Exception e) {
+                Log.d("METRONOME", "Wait failed " + e.getMessage());
+            }
             isPlaying = true;
             metronomeThread.start();
             start = System.currentTimeMillis();
@@ -170,14 +185,14 @@ public class MainActivity extends Activity {
         if(duration < 60) {
             for (double value : beat2time.values()) {
                 if (duration < value + TOLERANCE && duration > value - TOLERANCE) {
-                    Log.d("Hit", "TREFFER: " + duration + " value: " + value);
+                    //Log.d("Hit", "TREFFER: " + duration + " value: " + value);
                     hitCorrectly = true;
                 }
             }
         }else{
             Log.d("Hit", "ZEIT ABGELAUFEN");
         }
-        Log.d("Hit", " " + duration);
+        //Log.d("Hit", " " + duration);
         if(hitCorrectly){
             resultBtn.setBackgroundColor(COLOR_SUCCESS);
             successCounter++;

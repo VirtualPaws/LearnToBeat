@@ -25,8 +25,12 @@ import java.util.Iterator;
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     // bitmap
-    private static int[] BONBON_DRAWABLES = new int[]{R.drawable.single_bonbon_o, R.drawable.single_bonbon_g, R.drawable.single_bonbon_b};
-    private static int[] STICK_DRAWABLES = new int[]{R.drawable.bonbon_stick_o, R.drawable.bonbon_stick_g, R.drawable.bonbon_stick_b};
+    //private static int[] BONBON_DRAWABLES = new int[]{R.drawable.single_bonbon_o, R.drawable.single_bonbon_g, R.drawable.single_bonbon_b};
+    //private static int[] STICK_DRAWABLES = new int[]{R.drawable.bonbon_stick_o, R.drawable.bonbon_stick_g, R.drawable.bonbon_stick_b};
+
+    // TODO bonbons sollten alle die gleiche Größe haben
+    private static int[] BONBON_DRAWABLES = new int[]{R.drawable.single_bonbon_o};
+    private static int[] STICK_DRAWABLES = new int[]{R.drawable.bonbon_stick_o};
 
     private static final int LIMIT_BONBONS_ON_SCREEN = 10;
 
@@ -37,6 +41,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     private long bonbonStartTime;
     private ArrayList<Bonbon> bonbons;
+    private static int bonbonCounter = 0;
 
     private int currentDrawablePointer = 0;
 
@@ -131,8 +136,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         int bonbonDensity = (int)MainActivity.timeBetween2Beats * 1000; //4500
 
         //show next bonbon color
-        if(bonbonTime > bonbonDensity && bonbons.size() < LIMIT_BONBONS_ON_SCREEN){
-            Log.d("GamePanel","Update: making bonbon");
+        if(bonbonTime > bonbonDensity && bonbons.size() < LIMIT_BONBONS_ON_SCREEN && bonbonCounter < MainActivity.beat2time.size()){
+            //Log.d("GamePanel","Update: making bonbon");
 
             int currentDrawablePointer = getCurrentDrawablePointer();
 
@@ -145,6 +150,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             //dpi
             Bonbon bonbon = new Bonbon(bonbonBitmap, stickBitmap, WIDTH - Utils.convertDpToPx(60), Utils.convertDpToPx(22), bonbonBitmap.getWidth(), bonbonBitmap.getHeight());
             bonbons.add(bonbon);
+
+            bonbonCounter++;
 
             //reset timer
             bonbonStartTime = System.nanoTime();
