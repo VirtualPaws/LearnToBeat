@@ -26,10 +26,18 @@ public class GameMenu extends Activity {
      */
     private GoogleApiClient client;
 
+    public static int bpm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_menu);
+
+
+        if(bpm == 0){
+            bpm = 60;
+        }
+        Log.d("MENU", "BPM: " + bpm);
 
         Button startBtn = (Button) findViewById(R.id.start);
         Button helpBtn = (Button) findViewById(R.id.help);

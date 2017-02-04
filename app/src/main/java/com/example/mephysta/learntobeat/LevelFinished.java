@@ -25,6 +25,7 @@ public class LevelFinished extends Activity {
     public static int failedHits = 0;
     public static int bpm = 0;
     public static int time = 0;
+    public static int tickSum = 0;
 
     private DataSource dataSource;
 
@@ -38,6 +39,7 @@ public class LevelFinished extends Activity {
         failedHits = resultIntent.getIntExtra("result_fail", 0);
         bpm = resultIntent.getIntExtra("bpm",0);
         time = resultIntent.getIntExtra("time", 0);
+        tickSum = resultIntent.getIntExtra("tickSum", 0);
 
         dataSource = new DataSource(this);
 
@@ -57,7 +59,7 @@ public class LevelFinished extends Activity {
         dataSource.close();
 
         TextView resultText = (TextView) findViewById(R.id.resultText);
-        resultText.setText(successHits + " von 30 Ticks richtig getroffen!");
+        resultText.setText(successHits + " von " + tickSum + " Ticks richtig getroffen!");
 
         // Händelt die verschiedenen Button Klick Events.
         View.OnClickListener listener = new View.OnClickListener() {

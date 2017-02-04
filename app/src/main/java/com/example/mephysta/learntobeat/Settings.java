@@ -51,7 +51,7 @@ public class Settings extends Activity {
         NumberPicker bpmValue = (NumberPicker) findViewById(R.id.bpm_picker);
         bpmValue.setMinValue(50);
         bpmValue.setMaxValue(120);
-        bpmValue.setValue(80);
+        bpmValue.setValue(GameMenu.bpm);
         bpmValue.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
 
             @Override
@@ -86,6 +86,7 @@ public class Settings extends Activity {
    * Startet das Level neu.
    */
     private void saveBPM(){
+        GameMenu.bpm = bpmSettings;
         Intent intent = new Intent(this, GameMenu.class);
         startActivity(intent);
         finish();
