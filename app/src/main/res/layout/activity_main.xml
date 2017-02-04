@@ -15,7 +15,9 @@
     <com.example.mephysta.learntobeat.Animation.GamePanel
         android:id="@+id/gamePanel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+
+        />
 
     <ImageView
         android:id="@+id/anim"

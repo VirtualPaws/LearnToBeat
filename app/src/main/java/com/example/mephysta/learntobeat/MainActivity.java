@@ -232,8 +232,8 @@ public class MainActivity extends Activity {
     }
 
     public void startGame(View v){
-        gamePanelSurfaceView.startAnimation();
         removeDialog();
+        gamePanelSurfaceView.startAnimation();
         startStopMetronome();
     }
 
