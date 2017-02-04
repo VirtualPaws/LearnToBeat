@@ -25,11 +25,14 @@
         />
 
     <NumberPicker
-        android:id="@+id/bpm_picker"
+            android:id="@+id/bpm_picker"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:textSize="17dp"
         ></NumberPicker>
+
 
     <Button
         android:layout_width="match_parent"

@@ -155,9 +155,7 @@ public class MainActivity extends Activity {
             successCounter = 0;
             failCounter = 0;
 
-            // PROGRESS BAR
-            infoDialog = (RelativeLayout) findViewById(R.id.infoDialog);
-            infoDialog.removeAllViews();
+            removeDialog();
         }
     }
 
@@ -217,6 +215,12 @@ public class MainActivity extends Activity {
             public void onAnimationStart(Animation animation) {}
         });
         pawImageView.startAnimation(sets);
+    }
+
+    public void removeDialog(){
+        // dialog Box
+        infoDialog = (RelativeLayout) findViewById(R.id.infoDialog);
+        infoDialog.removeAllViews();
     }
 
 }
