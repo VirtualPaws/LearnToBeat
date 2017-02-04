@@ -147,7 +147,7 @@
             android:textColor="@color/white"
             android:soundEffectsEnabled="false"
             android:background="@drawable/button_selector"
-            android:onClick="startStopMetronome"
+            android:onClick="startGame"
             android:layout_marginTop="100dp"
             android:layout_centerHorizontal="true"
             />
