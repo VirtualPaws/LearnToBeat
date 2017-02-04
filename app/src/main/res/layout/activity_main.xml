@@ -11,6 +11,7 @@
     android:background="@drawable/bg_orange"
     tools:context="com.example.mephysta.learntobeat.MainActivity">
 
+
     <com.example.mephysta.learntobeat.Animation.GamePanel
         android:id="@+id/gamePanel"
         android:layout_width="match_parent"
@@ -62,41 +63,7 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/infoDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:background="@color/white">
 
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="130dp"
-        android:text="Versuche die Bonbons zu fangen! Tippe auf die Katze, wenn der Klick kommt"
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimary"
-        android:layout_marginTop="20dp"
-
-        />
-
-    <Button
-        android:id="@+id/metronomeStartStopBtn"
-        android:text="Los"
-        android:layout_width="156dip"
-        android:layout_height="58dp"
-        android:textSize="20dp"
-        android:fontFamily="casual"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:soundEffectsEnabled="false"
-        android:background="@drawable/button_selector"
-        android:onClick="startStopMetronome"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="20dp"
-        />
-    </RelativeLayout>
 
     <Button
         android:id="@+id/actionBtn"
@@ -115,7 +82,6 @@
         android:soundEffectsEnabled="false"
         android:onClick="grabBonbon"
         android:background="@android:color/transparent"/>
-    <!--   android:background="@drawable/button_selector"-->
 
     <Button
         android:layout_width="20dp"
@@ -146,5 +112,45 @@
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/imageView3"
         android:layout_alignStart="@+id/imageView3" />
+
+    <RelativeLayout
+        android:id="@+id/infoDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="230dp"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="20dp"
+        android:gravity="center"
+        android:background="@drawable/dialog_selector">
+
+        <TextView
+            android:layout_width="230dp"
+            android:layout_height="150dp"
+            android:text="Versuche die Bonbons zu fangen! Tippe auf die Katze, wenn der Klick kommt"
+            android:textAlignment="center"
+            android:textSize="17dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="20dp"
+
+            />
+
+        <Button
+            android:id="@+id/metronomeStartStopBtn"
+            android:text="Los"
+            android:layout_width="156dip"
+            android:layout_height="58dp"
+            android:textSize="20dp"
+            android:fontFamily="casual"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:soundEffectsEnabled="false"
+            android:background="@drawable/button_selector"
+            android:onClick="startStopMetronome"
+            android:layout_marginTop="100dp"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
 
 </RelativeLayout>

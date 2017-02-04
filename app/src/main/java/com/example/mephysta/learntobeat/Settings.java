@@ -22,18 +22,13 @@ import static com.example.mephysta.learntobeat.MainActivity.isPlaying;
  */
 
 public class Settings extends Activity {
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private GoogleApiClient client;
-
+    public int bpmSettings = 80;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
-
 
         // OnclickListener
         OnClickListener listener = new OnClickListener() {
@@ -51,10 +46,20 @@ public class Settings extends Activity {
         };
 
         Button btnSave = (Button) findViewById(R.id.save);
-        NumberPicker bpmValue = (NumberPicker) findViewById(R.id.bpm_picker);
-
         btnSave.setOnClickListener(listener);
+        //number picker
+        NumberPicker bpmValue = (NumberPicker) findViewById(R.id.bpm_picker);
+        bpmValue.setMinValue(50);
+        bpmValue.setMaxValue(120);
+        bpmValue.setValue(80);
+        bpmValue.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
 
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+               Log.d("bpm picker",":" + newVal);
+               bpmSettings = newVal;
+            }
+        });
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -89,7 +94,6 @@ public class Settings extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
@@ -99,7 +103,6 @@ public class Settings extends Activity {
     @Override
     public void onStop() {
         super.onStop();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
