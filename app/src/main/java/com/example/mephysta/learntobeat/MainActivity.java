@@ -64,14 +64,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("TEST", "BPM: " + GameMenu.bpm);
-
         // PROGRESS BAR
         mProgress = (ProgressBar) findViewById(R.id.progress_bar);
 
-        Log.d("Test1", "BPM: " + (double)GameMenu.bpm);
-        Log.d("Test2", "BPM: " + 60d);
-        Log.d("Test3", "BPM: " + (double)GameMenu.bpm / 60d);
         // METRONOME
         numberOfBeatsInLevelTime = (int)(((double)GameMenu.bpm / 60d) * (TOTAL_LEVEL_TIME/DIVISOR_SECONDS));
         /* Example: BPM = 120 - LevelTime = 30s

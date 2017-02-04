@@ -134,7 +134,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         //add bonbons on timer, in ms
         long bonbonTime = (System.nanoTime()- bonbonStartTime) / 1000000;
-        int bonbonDensity = (int)MainActivity.timeBetween2Beats * 1000; //4500
+        int bonbonDensity = (int) (MainActivity.timeBetween2Beats * 1000); //4500
 
         //show next bonbon color
         if(bonbonTime > bonbonDensity && tick2Bonbon.size() < LIMIT_BONBONS_ON_SCREEN && bonbonCounter < MainActivity.beat2time.size()){
