@@ -153,7 +153,9 @@ public class MainActivity extends Activity {
             gamePanelSurfaceView.stopAnimation();
         } else if (!isPlaying) {
             gamePanelSurfaceView.startAnimation();
-            // TODO
+            // TODO hier muss eine wartezeit rein, damit das Metronom erst Tickt,
+            // wenn der erste Bonbon in position ist
+            // Außerdem verschwindet das infofenster leider auch erst beim ersten Tick
             try {
                 Log.d("METRONOME", "WAIT: " + waitForFirstBonbon);
                 Thread.sleep(waitForFirstBonbon);
