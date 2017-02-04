@@ -108,6 +108,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
      * Starts the animation by creating and starting a new MainThread.
      */
     public void startAnimation(){
+        setVisibility(VISIBLE);
         bonbonStartTime = System.nanoTime();
         bonbonCounter = 0;
         if(thread == null || !thread.isAlive()) {
