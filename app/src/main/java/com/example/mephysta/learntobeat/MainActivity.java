@@ -144,7 +144,6 @@ public class MainActivity extends Activity {
 
     /**
      * Starts and stops the metronome.
-     * @param v -> the button which is clicked
      */
     public void startStopMetronome(){
         if (isPlaying) {
