@@ -39,16 +39,6 @@ public class Metronome implements Runnable {
     }
 
     public void play() {
-        // TODO
-        // Theoretisch muss hier nur eine Sleep rein, so lange, wie das erste Bonbon braucht, um
-        // bis zur Mitte des Bildschirms zu gelangen
-        try {
-            Log.d("METRONOME", "WAIT");
-            Thread.sleep(10000);
-        } catch (Exception e) {
-            Log.d("METRONOME", "Wait failed " + e.getMessage());
-        }
-
         calcSilence();
         double[] tick =
                 audioGenerator.getSineWave(this.tick, 8000, beatSound);
