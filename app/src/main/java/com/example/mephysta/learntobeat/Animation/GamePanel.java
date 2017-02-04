@@ -19,18 +19,20 @@ import com.example.mephysta.learntobeat.MainActivity;
 import com.example.mephysta.learntobeat.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     // bitmap
-    private static int[] BONBON_DRAWABLES = new int[]{R.drawable.single_bonbon_o, R.drawable.single_bonbon_g, R.drawable.single_bonbon_b};
-    private static int[] STICK_DRAWABLES = new int[]{R.drawable.bonbon_stick_o, R.drawable.bonbon_stick_g, R.drawable.bonbon_stick_b};
+    //private static int[] BONBON_DRAWABLES = new int[]{R.drawable.single_bonbon_o, R.drawable.single_bonbon_g, R.drawable.single_bonbon_b};
+    //private static int[] STICK_DRAWABLES = new int[]{R.drawable.bonbon_stick_o, R.drawable.bonbon_stick_g, R.drawable.bonbon_stick_b};
 
     // TODO bonbons sollten alle die gleiche Größe haben
-    //private static int[] BONBON_DRAWABLES = new int[]{R.drawable.single_bonbon_o};
-    //private static int[] STICK_DRAWABLES = new int[]{R.drawable.bonbon_stick_o};
+    private static int[] BONBON_DRAWABLES = new int[]{R.drawable.single_bonbon_o};
+    private static int[] STICK_DRAWABLES = new int[]{R.drawable.bonbon_stick_o};
 
     private static final int LIMIT_BONBONS_ON_SCREEN = 10;
 
@@ -40,7 +42,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Background bg;
 
     private long bonbonStartTime;
-    private ArrayList<Bonbon> bonbons;
+    //private ArrayList<Bonbon> bonbons;
+    public static Map<Integer, Bonbon> tick2Bonbon;
     private static int bonbonCounter = 0;
 
     private int currentDrawablePointer = 0;
@@ -56,10 +59,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         //make gamePanel focusable so it can handle events
         setFocusable(true);
-    }
-
-    public ArrayList<Bonbon> getList() {
-        return bonbons;
     }
 
     @Override
@@ -101,7 +100,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         Bitmap bitmap = getBitmap(getContext(), R.drawable.ic_bg, true);
         bg = new Background(bitmap);
 
-        bonbons = new ArrayList<>();
+        tick2Bonbon = new HashMap<>();
         //bonbonStartTime = System.nanoTime();
     }
 
@@ -137,7 +136,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         int bonbonDensity = (int)MainActivity.timeBetween2Beats * 1000; //4500
 
         //show next bonbon color
-        if(bonbonTime > bonbonDensity && bonbons.size() < LIMIT_BONBONS_ON_SCREEN && bonbonCounter < MainActivity.beat2time.size()){
+        if(bonbonTime > bonbonDensity && tick2Bonbon.size() < LIMIT_BONBONS_ON_SCREEN && bonbonCounter < MainActivity.beat2time.size()){
             //Log.d("GamePanel","Update: making bonbon");
 
             int currentDrawablePointer = getCurrentDrawablePointer();
@@ -150,8 +149,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             //dpi
             Bonbon bonbon = new Bonbon(bonbonBitmap, stickBitmap, WIDTH - Utils.convertDpToPx(60), Utils.convertDpToPx(22), bonbonBitmap.getWidth(), bonbonBitmap.getHeight());
-            bonbons.add(bonbon);
-
+            //bonbons.add(bonbon);
+            tick2Bonbon.put(bonbonCounter, bonbon);
             bonbonCounter++;
 
             //reset timer
@@ -159,13 +158,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         //loop through every bonbon and remove those which are not shown anymore
-        Iterator<Bonbon> bonbonIterator = bonbons.iterator();
-        while(bonbonIterator.hasNext()) {
-            Bonbon bonbon = bonbonIterator.next();
+        Iterator<Map.Entry<Integer, Bonbon>> iterator = tick2Bonbon.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry<Integer, Bonbon> entry = iterator.next();
+            Bonbon bonbon = entry.getValue();
             bonbon.update();
 
-            if(bonbon.getX() + bonbon.getWidth() <= 0) {
-                bonbonIterator.remove();
+            if(bonbon.getX() + bonbon.getWidth() <= 0){
+                iterator.remove();
             }
         }
     }
@@ -189,8 +189,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             bg.draw(canvas);
 
             //draw bonbons
-            for (Bonbon m : bonbons) {
-                m.draw(canvas);
+            for(int key : tick2Bonbon.keySet()){
+                tick2Bonbon.get(key).draw(canvas);
             }
 
             canvas.restoreToCount(savedState); //return back to the same state (unscale), otherwise it would keep scaling
@@ -243,6 +243,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
      * @param index -> index of bonbon to remove in list
      */
     public void removeBonbonFromStick(int index) {
-        bonbons.get(index).removeBonbonImage();
+        tick2Bonbon.get(index).removeBonbonImage();
     }
 }

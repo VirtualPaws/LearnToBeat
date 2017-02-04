@@ -75,8 +75,8 @@ public class MainActivity extends Activity {
          *      60s    LvlTime         60s   30s         60s                """"""
          */
         timeBetween2Beats = (TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)numberOfBeatsInLevelTime;
-        bonbonSpeed = (int)(((GamePanel.WIDTH - Utils.convertDpToPx(60) + 262)/2)/(timeBetween2Beats * FPS));
-        waitForFirstBonbon =((((GamePanel.WIDTH - Utils.convertDpToPx(60) +262)* DIVISOR_SECONDS))/bonbonSpeed)/FPS;
+        bonbonSpeed = (int)(((GamePanel.WIDTH - Utils.convertDpToPx(60) + 524)/2)/(timeBetween2Beats * FPS));
+        waitForFirstBonbon =((((GamePanel.WIDTH - Utils.convertDpToPx(60) +524)* DIVISOR_SECONDS))/bonbonSpeed)/FPS;
         Log.d("TB2B", ""+timeBetween2Beats + " bonbonSpeed: " + bonbonSpeed + " waitForFirstBonbon: " + waitForFirstBonbon);
 
         for(int i = 0; i<numberOfBeatsInLevelTime; i++){
@@ -154,13 +154,13 @@ public class MainActivity extends Activity {
             // TODO hier muss eine wartezeit rein, damit das Metronom erst Tickt,
             // wenn der erste Bonbon in position ist
             // Außerdem verschwindet das infofenster leider auch erst beim ersten Tick
-            /*
+
             try {
                 Log.d("METRONOME", "WAIT: " + waitForFirstBonbon);
                 Thread.sleep(waitForFirstBonbon);
             } catch (Exception e) {
                 Log.d("METRONOME", "Wait failed " + e.getMessage());
-            }*/
+            }
             isPlaying = true;
             metronomeThread.start();
             start = System.currentTimeMillis();
@@ -168,7 +168,6 @@ public class MainActivity extends Activity {
             // reset hit counter
             successCounter = 0;
             failCounter = 0;
-
         }
     }
 
@@ -180,11 +179,13 @@ public class MainActivity extends Activity {
         Button resultBtn = (Button) findViewById(R.id.result);
         double duration = (double)((System.currentTimeMillis() - start) / DIVISOR_SECONDS);
         boolean hitCorrectly = false;
+        int bonbonToRemoveIndex = 0;
         if(duration < 60) {
-            for (double value : beat2time.values()) {
-                if (duration < value + TOLERANCE && duration > value - TOLERANCE) {
+            for (int key : beat2time.keySet()) {
+                if (duration < beat2time.get(key) + TOLERANCE && duration > beat2time.get(key) - TOLERANCE) {
                     //Log.d("Hit", "TREFFER: " + duration + " value: " + value);
                     hitCorrectly = true;
+                    bonbonToRemoveIndex = key;
                 }
             }
         }else{
@@ -193,6 +194,12 @@ public class MainActivity extends Activity {
         //Log.d("Hit", " " + duration);
         if(hitCorrectly){
             resultBtn.setBackgroundColor(COLOR_SUCCESS);
+            try {
+                gamePanelSurfaceView.removeBonbonFromStick(bonbonToRemoveIndex);
+            }catch(Exception ie){
+                Log.d("GrabBonbon", "Bonbon does not yet exists. " + (bonbonToRemoveIndex));
+            }
+
             successCounter++;
         }else{
             resultBtn.setBackgroundColor(COLOR_FAIL);
@@ -208,18 +215,6 @@ public class MainActivity extends Activity {
             //Check if paw hit-area collided with a bonbon. If yes, remove the bonbon from the surface view
             @Override
             public void onAnimationEnd(Animation animation) {
-                Rect pawRect = UiUtils.getPawHitRect(pawImageView);
-
-                ArrayList<Bonbon> bonbons = gamePanelSurfaceView.getList();
-                for(int count=0; count<bonbons.size(); count++){
-                    Rect bonbonRect = UiUtils.getBonbonHitRect(bonbons.get(count));
-
-                    boolean hasCollided = UiUtils.isCollision(bonbonRect, pawRect);
-                    if(hasCollided) {
-                        gamePanelSurfaceView.removeBonbonFromStick(count);
-                        break;
-                    }
-                }
             }
 
             @Override
@@ -237,9 +232,9 @@ public class MainActivity extends Activity {
     }
 
     public void startGame(View v){
+        gamePanelSurfaceView.startAnimation();
         removeDialog();
         startStopMetronome();
-        gamePanelSurfaceView.startAnimation();
     }
 
 }

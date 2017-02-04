@@ -23,8 +23,8 @@ public class Bonbon {
         height = h;
 
         // TODO Speed
-        speed = (int)(((GamePanel.WIDTH - Utils.convertDpToPx(60) + width)/2)/(MainActivity.timeBetween2Beats * MainActivity.FPS));
-        //Log.d("BONBON", "SPEED: " + speed + " WIDTH: " + width + " WIDTH2: " + (GamePanel.WIDTH - Utils.convertDpToPx(60)));
+        speed = (int)(((GamePanel.WIDTH - Utils.convertDpToPx(60) + (width*2))/2)/(MainActivity.timeBetween2Beats * MainActivity.FPS));
+        Log.d("BONBON", "SPEED: " + speed + " WIDTH: " + width + " WIDTH2: " + (GamePanel.WIDTH - Utils.convertDpToPx(60)));
         //speed = 15;
         bonbonSprite = bonbon;
         stickSprite = bonbonStick;
