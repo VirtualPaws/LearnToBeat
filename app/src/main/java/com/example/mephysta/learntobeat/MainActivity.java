@@ -31,22 +31,22 @@ public class MainActivity extends Activity {
     public static Thread metronomeThread;
     public static double start;                             // Metronom Startzeit
     public static boolean isPlaying = false;                // trigger für das Metronom
-    public static final int BPM = 60;                       // Beats Per Minute
     public static double timeBetween2Beats;                 // Time between two beats, depending on BPM
     public static final int FPS = 30;                       // Frames Per Second
-    public static final double TOLERANCE = 0.25;             // Toleranz beim Treffen des genauen Takts
+    public static final double TOLERANCE = 0.25;            // Toleranz beim Treffen des genauen Takts
     public static final int COLOR_SUCCESS = 0xFF00FF00;     // Feedback Farbe bei Erfolg
     public static final int COLOR_FAIL = 0xFFFF0000;        // Feedback Farbe bei Misserfolg
     public static int successCounter = 0;                   // Zähler der richtigen Klicks
     public static int failCounter = 0;                      // Zähler der falschen Klicks
     public static final int DIVISOR_SECONDS = 1000;         // Divisor ms in s
-    public static final int TOTAL_LEVEL_TIME = 30000;       // Maximale Levelzeit ( in ms)
+    public static final double TOTAL_LEVEL_TIME = 30000;       // Maximale Levelzeit ( in ms)
     public static final int COUNTDOWN = 3;                  // Startcountdown bevor Level beginnt
     private ProgressBar mProgress;                          // Progressbalken
     private int mProgressStatus = 0;                        // Status des Progressbalkens (0-100)
     private Handler mHandler = new Handler();               // für async Update des Progressbalkens
     public static Map<Integer, Double> beat2time = new HashMap<>();
     private CountDownTimer countDowntimer;
+    private static int numberOfBeatsInLevelTime;
 
     public static int waitForFirstBonbon;
     public static int bonbonSpeed;
@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
         mProgress = (ProgressBar) findViewById(R.id.progress_bar);
 
         // METRONOME
-        int numberOfBeatsInLevelTime = BPM / 60 * (TOTAL_LEVEL_TIME/DIVISOR_SECONDS);
+        numberOfBeatsInLevelTime = (int)(((double)GameMenu.bpm / 60d) * (TOTAL_LEVEL_TIME/DIVISOR_SECONDS));
         /* Example: BPM = 120 - LevelTime = 30s
          *      BPM       x            120    x          120
          *      ---  = -------   -->   --- = ---   -->   --- * 30s = x -->  60 = x
@@ -77,13 +77,13 @@ public class MainActivity extends Activity {
         timeBetween2Beats = (TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)numberOfBeatsInLevelTime;
         bonbonSpeed = (int)(((GamePanel.WIDTH - Utils.convertDpToPx(60) + 524)/2)/(timeBetween2Beats * FPS));
         waitForFirstBonbon =((((GamePanel.WIDTH - Utils.convertDpToPx(60) +524)* DIVISOR_SECONDS))/bonbonSpeed)/FPS;
-        Log.d("TB2B", ""+timeBetween2Beats + " bonbonSpeed: " + bonbonSpeed + " waitForFirstBonbon: " + waitForFirstBonbon);
+        Log.d("NrBeats: " + numberOfBeatsInLevelTime + " TB2B", ""+timeBetween2Beats + " bonbonSpeed: " + bonbonSpeed + " waitForFirstBonbon: " + waitForFirstBonbon);
 
         for(int i = 0; i<numberOfBeatsInLevelTime; i++){
-            beat2time.put(i,((TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)numberOfBeatsInLevelTime)*i + ((TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)BPM)/2);
+            beat2time.put(i,((TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)numberOfBeatsInLevelTime)*i + ((TOTAL_LEVEL_TIME/DIVISOR_SECONDS)/(double)GameMenu.bpm)/2);
             Log.d(i + ". beat", " " + beat2time.get(i));
         }
-        metronome = new Metronome(BPM, 1000, 18.35, 16.35);
+        metronome = new Metronome(GameMenu.bpm, 1000, 18.35, 16.35);
         metronomeThread = new Thread(metronome);
 
         /*
@@ -92,7 +92,7 @@ public class MainActivity extends Activity {
          * @param TOTAL_LEVEL_TIME -> Wie lange das Level geht. Momentan 30 sec
          * @param DIVISOR_SECONDS -> Wie oft ein Event gehandelt wird. Momentan jede Sekunde.
          */
-        countDowntimer = new CountDownTimer(TOTAL_LEVEL_TIME, 10) {
+        countDowntimer = new CountDownTimer((int)TOTAL_LEVEL_TIME, 10) {
             /*
              * Eventhandling bei jedem Tick des CountDowns (Momentan jede Sekunde).
              * Ein Progessbalken wird aktualisiert, damit man erkennt, wie lange das Level noch geht.
@@ -136,8 +136,9 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, LevelFinished.class);
         intent.putExtra("result_success", successCounter);
         intent.putExtra("result_fail", failCounter);
-        intent.putExtra("bpm", BPM);
+        intent.putExtra("bpm", GameMenu.bpm);
         intent.putExtra("time", TOTAL_LEVEL_TIME);
+        intent.putExtra("tickSum", numberOfBeatsInLevelTime);
         startActivity(intent);
         finish();
     }
