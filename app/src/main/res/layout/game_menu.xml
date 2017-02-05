@@ -9,32 +9,29 @@
 
     android:background="@drawable/bg_orange">>
 
-    <Button
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="30dp"
-        android:id="@+id/start"
-
-        android:textSize="20sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         android:fontFamily="casual"
-        android:textColor="@color/white"
-        android:text="@string/start"
-
-        android:background="@drawable/button_selector"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="Hit the Beat"
         />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="12dp"
-        android:id="@+id/help"
+        android:id="@+id/start"
 
         android:textSize="20sp"
         android:textStyle="bold"
         android:fontFamily="casual"
         android:textColor="@color/white"
-        android:text="@string/help"
+        android:text="Start"
 
         android:background="@drawable/button_selector"
         />

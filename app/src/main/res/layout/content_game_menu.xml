@@ -7,34 +7,31 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
 
-    android:background="@drawable/bg_orange">
+    android:background="@drawable/bg_orange">>
 
-    <Button
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="30dp"
-        android:id="@+id/start"
-
-        android:textSize="20sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         android:fontFamily="casual"
-        android:textColor="@color/white"
-        android:text="@string/start"
-
-        android:background="@drawable/button_selector"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="Hit the Beat"
         />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="12dp"
-        android:id="@+id/help"
+        android:id="@+id/start"
 
         android:textSize="20sp"
         android:textStyle="bold"
         android:fontFamily="casual"
         android:textColor="@color/white"
-        android:text="@string/help"
+        android:text="Start"
 
         android:background="@drawable/button_selector"
         />
@@ -56,12 +53,12 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="230dp"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="bottom"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:src="@drawable/cat_02"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
         android:id="@+id/imageView2" />
 
 </LinearLayout>

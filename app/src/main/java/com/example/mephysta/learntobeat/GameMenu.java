@@ -40,7 +40,7 @@ public class GameMenu extends Activity {
         Log.d("MENU", "BPM: " + bpm);
 
         Button startBtn = (Button) findViewById(R.id.start);
-        Button helpBtn = (Button) findViewById(R.id.help);
+
         Button settingsBtn = (Button) findViewById(R.id.settings);
 
         // Handelt die verschiedenen Button Klick Events.
