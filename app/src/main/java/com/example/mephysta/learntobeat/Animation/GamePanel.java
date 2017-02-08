@@ -200,6 +200,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     /**
      * svg to bitmap
+     * Code von http://stackoverflow.com/questions/32716570/decoding-svg-image-to-bitmap
      * @param context
      * @param drawableId
      * @param setSize

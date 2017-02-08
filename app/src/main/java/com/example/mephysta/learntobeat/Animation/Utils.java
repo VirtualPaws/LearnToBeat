@@ -10,6 +10,7 @@ public class Utils {
 
     /**
      * Converts dp to px.
+     * Code von http://stackoverflow.com/questions/28531996/android-recyclerview-gridlayoutmanager-column-spacing/29905000
      * @param dp
      * @return
      */
