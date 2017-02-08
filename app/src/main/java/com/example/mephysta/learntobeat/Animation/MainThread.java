@@ -2,7 +2,9 @@ package com.example.mephysta.learntobeat.Animation;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
-
+/*
+    Code von Paymon Wang-Lotfi https://www.youtube.com/playlist?list=PLWweaDaGRHjvQlpLV0yZDmRKVBdy6rSlg
+*/
 public class MainThread extends Thread {
     //the game loop is called 30 times a second
     private int FPS = 30;
